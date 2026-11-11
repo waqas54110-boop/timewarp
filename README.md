@@ -139,3 +139,4 @@ Database: run `database/schema.sql` again (safe to repeat). It adds `saves.meta`
 **Language**: Urdu, Roman Urdu, English (`public/js/i18n.js`, `data-i18n` attributes). Limit: it covers buttons, labels and the whole `/me` page; the story events inside Life Mode are written in Roman Urdu only.
 **Honest limits**: Time Machine points are kept in the browser/account and can be edited by a determined player (they are only clamped to a legal range; the leaderboard does not use them, it verifies the life itself). The sky, GPS and paint code needs Three.js and was checked with a stub, not in a real 3D session. Life Mode shows no real historical persons; if scenes with them are added, they must carry a "Dramatized" badge.
 Tests: `tests/phase5.test.js`, `tests/daycycle.test.js`, `tests/phase5b.test.js`.
+# timewarp
