@@ -1,0 +1,7 @@
+<% if (pager && pager.pages > 1) { %>
+<nav class="pager" aria-label="Pagination">
+  <% if (pager.prev) { %><a href="<%= pager.prev %>">← Previous</a><% } else { %><span></span><% } %>
+  <span>Page <%= pager.page %> of <%= pager.pages %> (<%= pager.total %> results)</span>
+  <% if (pager.next) { %><a href="<%= pager.next %>">Next →</a><% } else { %><span></span><% } %>
+</nav>
+<% } %>

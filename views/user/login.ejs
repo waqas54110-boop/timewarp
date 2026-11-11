@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+<section class="section narrow">
+  <h1>Log in</h1>
+  <% errors.forEach((m) => { %><p class="error"><%= m %></p><% }) %>
+  <form method="post" action="/auth/login" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label>Email <input type="email" name="email" value="<%= values.email || '' %>" required autocomplete="email"></label>
+    <label>Password <input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn primary">Log in</button>
+  </form>
+  <p>New here? <a href="/auth/register">Create an account</a></p>
+</section>
+<%- include('../partials/footer') %>

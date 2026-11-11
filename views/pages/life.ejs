@@ -1,0 +1,95 @@
+<%- include('../partials/header') %>
+<section class="life" id="life" data-i18n-scope>
+  <p class="life-toprow"><select data-lang-select aria-label="Language" class="lang-select"></select> <a class="btn ghost small" href="/me" data-i18n="life.world">Meri Duniya</a></p>
+  <div id="life-start" class="life-card life-start">
+    <div id="life-continue" class="life-continue" hidden>
+      <p class="year" data-i18n="saved.life">Save ki hui zindagi</p>
+      <p id="life-continue-text" class="lead"></p>
+      <p><button id="life-continue-btn" class="btn primary" type="button" data-i18n="continue">Continue</button>
+         <button id="life-new-btn" class="btn ghost" type="button" data-i18n="newlife">New Life</button></p>
+    </div>
+    <h1 data-i18n="life.title">Life Mode</h1>
+    <p class="lead" data-i18n="life.lead">Baby se budhape tak ek poori zindagi: hospital mein janam, bachpan, school aur matric, college, career, shadi, family aur retirement. Har faisla aap ki zindagi badalta hai.</p>
+    <form id="life-form" class="life-form">
+      <label><span data-i18n="life.name">Aap ka naam</span>
+        <input id="life-name" maxlength="20" autocomplete="off" required placeholder="Jaise: Ali" data-i18n-ph="life.name.ph">
+      </label>
+      <label><span data-i18n="life.era">Kis zamane mein paida hona hai?</span>
+        <select id="life-era">
+          <option value="present" data-i18n="era.present">Present (aaj ka zamana)</option>
+          <option value="past" data-i18n="era.past">Past (purana zamana)</option>
+          <option value="future" data-i18n="era.future">Future (2050)</option>
+        </select>
+      </label>
+      <label><span data-i18n="life.dream">Aap ka khwab</span>
+        <select id="life-dream"><option value="" data-i18n="dream.none">Abhi koi nahi</option></select>
+      </label>
+      <p id="life-perks" class="small muted" hidden></p>
+      <button class="btn primary" type="submit" data-i18n="life.start">Zindagi shuru karo</button>
+    </form>
+    <p class="small muted"><%= user ? 'Aap ki zindagi aap ke account mein khud save hoti hai.' : 'Aap ki zindagi is browser mein khud save hoti hai. Account se login karein to wo har device par milti hai.' %></p>
+  </div>
+
+  <div id="life-play" class="life-play" hidden>
+    <div class="life-top">
+      <div class="life-agebox"><span class="life-age" id="life-age">0</span><span class="life-age-label" data-i18n="age.unit">saal</span></div>
+      <p class="life-year" id="life-year"></p>
+      <p class="life-stage-now" id="life-stage"></p>
+      <button id="life-movie-mid" class="btn ghost small" type="button" data-i18n="life.movie.mid">🎬 Ab tak ki Life Movie</button>
+      <span class="life-saved small muted" id="life-saved" role="status"></span>
+      <button id="life-restart" class="btn ghost small" type="button" data-i18n="life.restart">Naya jeevan</button>
+    </div>
+    <ol class="life-timeline" id="life-timeline" aria-label="Zindagi ke marahil"></ol>
+    <div class="life-track" aria-hidden="true"><div class="life-track-fill" id="life-progress"></div><span class="life-track-dot" id="life-dot"></span></div>
+
+    <div class="life-layout">
+      <div id="life-scene" class="life-scene">
+        <canvas id="life-art" class="life-art" width="640" height="260" role="img" aria-label="Cartoon picture of your life right now"></canvas>
+        <div class="life-icon" id="life-icon" aria-hidden="true"></div>
+        <h2 id="life-title"></h2>
+        <p id="life-text" class="life-text" aria-live="polite"></p>
+        <div id="life-result" class="life-result" aria-live="polite" hidden></div>
+        <div id="life-choices" class="life-choices"></div>
+        <button id="life-next" class="btn primary" type="button" hidden data-i18n="life.next">Agla saal &rarr;</button>
+      </div>
+      <aside class="life-side" aria-label="Aap ki halat">
+        <div id="life-stats" class="life-stats"></div>
+        <p class="life-line"><span class="muted" data-i18n="life.money">Paisa:</span> <strong id="life-money"></strong></p>
+        <p class="life-line"><span class="muted" data-i18n="life.job">Peshah:</span> <strong id="life-job"></strong></p>
+        <h3 data-i18n="life.diary">Zindagi ki diary</h3>
+        <ul id="life-log" class="life-log"></ul>
+      </aside>
+    </div>
+  </div>
+
+  <div id="life-end" class="life-card life-end" hidden>
+    <p class="year" data-i18n="end.summary">Zindagi ka khulasa</p>
+    <h1 id="end-title"></h1>
+    <p class="life-score" id="end-score"></p>
+    <p id="end-line" class="lead"></p>
+    <p id="end-farewell" class="life-farewell"></p>
+    <div class="life-end-grid">
+      <div><h3 data-i18n="end.state">Haalat</h3><ul id="end-stats"></ul></div>
+      <div><h3 data-i18n="end.virtues">Aap ki khoobiyan</h3><ul id="end-virtues"></ul></div>
+    </div>
+    <h3 data-i18n="end.memories">Yaadon ka safar</h3>
+    <ul id="end-memories" class="life-mem"></ul>
+    <p><button id="life-movie" class="btn primary" type="button" data-i18n="end.movie">🎬 Meri Life Movie dekho</button>
+       <button id="life-restart2" class="btn ghost" type="button" data-i18n="end.restart">Naya jeevan shuru karo</button>
+       <button id="life-claim" class="btn" type="button" hidden></button>
+       <button id="life-submit" class="btn" type="button" data-i18n="board.submit">Mera score bhejein</button>
+       <a class="btn ghost" href="/me" data-i18n="life.world">Meri Duniya</a></p>
+    <p id="end-meta" class="small muted" role="status"></p>
+  </div>
+  <noscript><p class="error">Life Mode ke liye JavaScript chahiye.</p></noscript>
+</section>
+<script src="/js/i18n.js"></script>
+<script src="/js/save.js"></script>
+<script src="/js/meta.js"></script>
+<script src="/js/life.js"></script>
+<script src="/js/minigames.js"></script>
+<script src="/js/life-art.js"></script>
+<script src="/js/video.js"></script>
+<script src="/js/life-movie.js"></script>
+<script src="/js/life-ui.js"></script>
+<%- include('../partials/footer') %>

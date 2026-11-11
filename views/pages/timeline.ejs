@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Timeline</h1>
+  <%- include('../partials/filters', { action: '/timeline' }) %>
+  <% errors.forEach((m) => { %><p class="error"><%= m %></p><% }) %>
+  <ol class="timeline">
+    <% events.forEach((e) => { %>
+      <li><span class="dot"></span><div><p class="year"><%= fy(e.event_year) %></p><%- include('../partials/event-card', { e }) %></div></li>
+    <% }) %>
+  </ol>
+  <% if (!events.length) { %><p class="empty">Nothing found for that range.</p><% } %>
+  <%- include('../partials/pager') %>
+</section>
+<%- include('../partials/footer') %>

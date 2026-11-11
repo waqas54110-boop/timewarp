@@ -1,0 +1,8 @@
+<article class="card prediction-card">
+  <p class="badge-spec">Speculative scenario</p>
+  <p class="year"><%= p.target_year %><% if (p.category) { %> · <span class="tag"><%= p.category %></span><% } %></p>
+  <h3><%= p.title %></h3>
+  <p><%= p.description %></p>
+  <% if (p.assumptions) { %><details><summary>Assumptions</summary><p><%= p.assumptions %></p></details><% } %>
+  <% if (p.confidence_level) { %><p class="muted">Confidence: <%= p.confidence_level %><% if (p.last_reviewed) { %> · reviewed <%= new Date(p.last_reviewed).toISOString().slice(0, 10) %><% } %></p><% } %>
+</article>

@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<section class="section narrow">
+  <h1>Leaderboard</h1>
+  <p class="lead">Points = 10 per badge + 5 per best quiz score + 1 per journey.</p>
+  <div class="chips">
+    <a class="chip" href="/leaderboard" <%- season === 'all' ? 'aria-current="page"' : '' %>>All time</a>
+    <a class="chip" href="/leaderboard?season=month" <%- season === 'month' ? 'aria-current="page"' : '' %>>This month</a>
+  </div>
+  <% if (!rows.length) { %><p class="empty">Nobody is on the board yet. <a href="/">Take a journey</a> or <a href="/quiz">try the quiz</a> while signed in.</p><% } else { %>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Traveller</th><th>Points</th><th>Badges</th><th>Best quiz</th><th>Journeys</th></tr></thead>
+    <tbody><% rows.forEach((r, i) => { %>
+      <tr <%- me && r.username === me ? 'class="me"' : '' %>><td><%= i + 1 %></td><td><%= r.username %></td><td><strong><%= r.points %></strong></td><td><%= r.badges %></td><td><%= r.best_quiz %></td><td><%= r.journeys %></td></tr>
+    <% }) %></tbody>
+  </table></div>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+<article class="section narrow">
+  <h1><%= destination.name %></h1>
+  <p class="muted"><%= destination.country %><% if (destination.era_name) { %> · <%= destination.era_name %><% } %></p>
+  <% if (destination.image_url) { %><figure><img src="<%= destination.image_url %>" alt="<%= destination.name %>" loading="lazy"></figure><% } %>
+  <p><%= destination.description %></p>
+  <p>
+    <a class="btn primary" href="/travel?mode=present&year=<%= new Date().getFullYear() %>&destinationId=<%= destination.id %>">Visit today</a>
+    <a class="btn ghost" href="/compare?destinationId=<%= destination.id %>">Compare then &amp; now</a>
+  </p>
+  <h2>Events at this destination</h2>
+  <% if (!events.length) { %><p class="empty">No documented events yet.</p><% } %>
+  <ol class="timeline"><% events.forEach((e) => { %><li><span class="dot"></span><div><%- include('../partials/event-card', { e }) %></div></li><% }) %></ol>
+</article>
+<%- include('../partials/footer') %>

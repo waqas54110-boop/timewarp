@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · TimeWarp</title>
+  <meta name="description" content="TimeWarp – explore the past, present and future in an interactive 3D time portal.">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TimeWarp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-csrf="<%= csrfToken %>" data-auth="<%= user ? 1 : 0 %>">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="/" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav" aria-label="Main">
+    <% const links = [['/', 'Home'], ['/past', 'Past'], ['/present', 'Present'], ['/future', 'Future'], ['/timeline', 'Timeline'], ['/globe', 'Globe'], ['/life', 'Life'], ['/me', 'Meri Duniya'], ['/compare', 'Compare'], ['/quiz', 'Quiz'], ['/leaderboard', 'Leaderboard']]; %>
+    <% links.forEach(([href, label]) => { %>
+      <a href="<%= href %>" <%- currentPath === href ? 'aria-current="page"' : '' %>><%= label %></a>
+    <% }) %>
+    <form action="/search" method="get" class="nav-search" role="search">
+      <input type="search" name="q" maxlength="100" placeholder="Search…" aria-label="Search">
+    </form>
+    <% if (user) { %>
+      <a href="/dashboard">My journeys</a>
+      <% if (user.role === 'admin' || user.role === 'editor') { %><a href="/admin">Admin</a><% } %>
+      <form action="/auth/logout" method="post" class="inline"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="link-btn">Log out (<%= user.username %>)</button></form>
+    <% } else { %>
+      <a href="/auth/login">Account</a>
+    <% } %>
+  </nav>
+</header>
+<main id="main">

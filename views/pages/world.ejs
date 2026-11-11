@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+<section class="explore world" id="world" data-mode="<%= mode %>" data-year="<%= year %>" data-seed="<%= destination ? destination.id : 0 %>" data-lat="<%= destination && destination.latitude != null ? destination.latitude : '' %>" data-lng="<%= destination && destination.longitude != null ? destination.longitude : '' %>" data-place="<%= destination ? destination.name : 'the world' %>">
+  <canvas id="world-canvas" aria-label="Third-person 3D view of a living street in <%= destination ? destination.name : 'the world' %>, <%= fy(year) %>" role="img"></canvas>
+  <div class="explore-top">
+    <a class="btn ghost" href="<%= backHref %>">&larr; Back to scene</a>
+    <p class="explore-title"><strong><%= destination ? destination.name : 'The World' %></strong> &middot; <%= fy(year) %><% if (mode === 'future') { %> &middot; <span class="badge-spec">Speculative scenario</span><% } %></p>
+    <% const jump = mode === 'future' ? { mode: 'present', year: new Date().getFullYear(), label: 'Back to ' + new Date().getFullYear() } : { mode: 'future', year: 2050, label: 'Fly to 2050' }; %>
+    <a class="btn ghost" href="/world?mode=<%= jump.mode %>&year=<%= jump.year %><%= destination ? '&destinationId=' + destination.id : '' %>"><%= jump.label %></a>
+    <button id="face-toggle" class="btn ghost" type="button" aria-expanded="false" aria-controls="face-panel">Your look</button>
+    <button id="voice-toggle" class="btn ghost" type="button" aria-pressed="false">Voice: on</button>
+    <button id="photo-btn" class="btn ghost" type="button">Photo</button>
+    <label class="paint-label" title="Gaari / bike / jahaz ka rang">🎨 <input id="paint-color" type="color" value="#dc2626" aria-label="Vehicle colour"></label>
+    <button id="rec-btn" class="btn ghost" type="button" aria-pressed="false">⏺ Record</button>
+    <button id="day-btn" class="btn ghost" type="button" disabled title="Thori der ghoomein, phir aaj ki cartoon video ban sakti hai">🎬 Aaj ki video</button>
+    <button id="view-toggle" class="btn ghost" type="button" aria-pressed="false">See my face</button>
+  </div>
+
+  <aside id="face-panel" class="face-panel" aria-label="Customise your avatar" hidden>
+    <h2>Your look</h2>
+    <label>Photo of your face
+      <input id="face-file" type="file" accept="image/*">
+    </label>
+    <label>Face zoom <input id="face-zoom" type="range" min="0.35" max="1" step="0.01" value="0.62"></label>
+    <label>Move photo up / down <input id="face-shift" type="range" min="-0.3" max="0.3" step="0.01" value="0"></label>
+    <canvas id="face-preview" width="128" height="64" aria-label="Preview of your avatar's face"></canvas>
+    <label>Outfit colour <input id="shirt-color" type="color" value="#2563eb"></label>
+    <label>Hair colour <input id="hair-color" type="color" value="#2a1c14"></label>
+    <button id="face-reset" class="link-btn small" type="button">Use the default face</button>
+    <p class="small muted">Your photo is used only in this browser tab to texture your avatar. It is not uploaded or saved. Use your own photo, or one of someone who has agreed.</p>
+    <p id="face-msg" class="small" role="status"></p>
+  </aside>
+
+  <p id="wallet" class="wallet" aria-label="Your money and shopping bag"></p>
+  <canvas id="minimap" class="minimap" width="160" height="160" aria-label="Mini map: you are the white arrow, police are blue, shopkeepers yellow, fights red"></canvas>
+  <p id="world-prompt" class="world-prompt" role="status" aria-live="polite" hidden></p>
+
+  <aside id="talk-panel" class="talk-panel" aria-label="Conversation" hidden>
+    <div class="talk-head"><strong id="talk-name"></strong><button id="talk-close" class="link-btn small" type="button">Close (Esc)</button></div>
+    <ul id="talk-log" class="talk-log" aria-live="polite"></ul>
+    <div id="talk-items" class="talk-items"></div>
+    <div id="talk-friend" class="talk-friend"></div>
+    <div id="talk-chips" class="talk-chips"></div>
+    <form id="talk-form" class="talk-form">
+      <input id="talk-input" maxlength="160" autocomplete="off" placeholder="Type, or press Speak…" aria-label="Your message">
+      <button class="btn primary" type="submit">Send</button>
+    </form>
+    <div class="talk-voice">
+      <button id="talk-mic" class="btn ghost small" type="button" aria-pressed="false">Speak</button>
+      <select id="talk-lang" aria-label="Language you speak"><option value="en-US">English</option><option value="ur-PK">اردو</option><option value="hi-IN">हिन्दी</option></select>
+    </div>
+  </aside>
+
+  <div class="world-actions" aria-label="Actions">
+    <button id="act-interact" class="btn ghost" type="button">E · Talk / Enter</button>
+    <button id="act-fight" class="btn ghost" type="button">F · Fight</button>
+    <button id="act-wave" class="btn ghost" type="button">1 · Wave</button>
+    <button id="act-dance" class="btn ghost" type="button">2 · Dance</button>
+  </div>
+
+  <button id="sky-chip" class="sky-chip" type="button" aria-live="off">--:--</button>
+  <p id="sky-toast" class="sky-toast" role="status" aria-live="polite" hidden></p>
+  <p id="video-msg" class="video-msg" role="status" aria-live="polite" hidden></p>
+  <p id="world-ticker" class="world-ticker" role="status" aria-live="polite"></p>
+  <p id="world-status" class="explore-status" role="status">Building the street…</p>
+  <p class="explore-hint">Drag = camera &middot; W A S D = walk &middot; Shift = run &middot; E = talk / enter a shop &middot; F = fight &middot; 1 / 2 = wave / dance &middot; <strong>Cars:</strong> E next to a car stops it and pulls the driver out, E again to sit in &middot; Space / C = up / down in the helicopter and plane (airfield is west, mosque east) &middot; <strong>M</strong> = world map + GPS (G clears it): fly to any country, every big city has a runway &middot; Doors marked LIFT lead to every floor and the roof &middot; 3 crashes set a plane on fire</p>
+  <div class="explore-pad" aria-label="Walk controls">
+    <button type="button" data-dir="f" aria-label="Walk forward">&uarr;</button>
+    <button type="button" data-dir="l" aria-label="Walk left">&larr;</button>
+    <button type="button" data-dir="b" aria-label="Walk backward">&darr;</button>
+    <button type="button" data-dir="r" aria-label="Walk right">&rarr;</button>
+  </div>
+  <noscript><p class="error">The Live World needs JavaScript. <a href="<%= backHref %>">Back to the scene</a></p></noscript>
+</section>
+<script src="/js/video.js"></script>
+<script src="/js/save.js"></script>
+<script src="/js/daycycle.js"></script>
+<script src="/js/crowd.js"></script>
+<script src="/js/missions.js"></script>
+<script src="/js/dialogue.js"></script>
+<script src="/js/friends.js"></script>
+<script src="/js/social.js"></script>
+<script src="/js/face.js"></script>
+<script type="module" src="/js/world.js"></script>
+<%- include('../partials/footer') %>

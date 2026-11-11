@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1><%= r.label %></h1>
+  <p><a class="btn primary" href="/admin/<%= key %>/new">+ New</a> <a class="btn ghost" href="/admin">Back</a></p>
+  <div class="table-wrap"><table>
+    <thead><tr><% r.columns.forEach((c) => { %><th><%= c %></th><% }) %><th></th></tr></thead>
+    <tbody>
+    <% rows.forEach((row) => { %>
+      <tr><% r.columns.forEach((c) => { %><td><%= row[c] %></td><% }) %>
+        <td class="row-actions">
+          <a href="/admin/<%= key %>/<%= row.id %>/edit">Edit</a>
+          <% if (user.role === 'admin') { %>
+          <form method="post" action="/admin/<%= key %>/<%= row.id %>/delete" class="inline" data-confirm="Delete this record?">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="link-btn danger">Delete</button></form>
+          <% } %>
+        </td></tr>
+    <% }) %>
+    </tbody>
+  </table></div>
+</section>
+<%- include('../partials/footer') %>

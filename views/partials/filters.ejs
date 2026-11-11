@@ -1,0 +1,18 @@
+<form class="filters" method="get" action="<%= action %>">
+  <label>From year <input type="number" name="from" value="<%= filters.from ?? '' %>" min="-5000" max="3000"></label>
+  <label>To year <input type="number" name="to" value="<%= filters.to ?? '' %>" min="-5000" max="3000"></label>
+  <label>Category
+    <select name="category"><option value="">All</option>
+      <% categories.forEach((c) => { %><option <%= String(filters.category || '').toLowerCase() === c.toLowerCase() ? 'selected' : '' %>><%= c %></option><% }) %>
+    </select></label>
+  <label>Country
+    <select name="country"><option value="">All</option>
+      <% countries.forEach((c) => { %><option <%= String(filters.country || '').toLowerCase() === c.toLowerCase() ? 'selected' : '' %>><%= c %></option><% }) %>
+    </select></label>
+  <label>Destination
+    <select name="destinationId"><option value="">All</option>
+      <% destinations.forEach((d) => { %><option value="<%= d.id %>" <%= Number(filters.destinationId) === Number(d.id) ? 'selected' : '' %>><%= d.name %></option><% }) %>
+    </select></label>
+  <button class="btn" type="submit">Apply</button>
+  <a class="btn ghost" href="<%= action %>">Reset</a>
+</form>

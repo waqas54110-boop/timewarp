@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<section class="life" id="me" data-i18n-scope>
+  <p class="life-toprow"><select data-lang-select aria-label="Language" class="lang-select"></select> <a class="btn ghost small" href="/life" data-i18n="back.life">Life Mode par wapas</a></p>
+  <h1 data-i18n="me.title">Meri Duniya</h1>
+  <p class="lead" data-i18n="me.lead">Aap ki zindagi ka ghar, khandaan, diary, khwab aur Time Machine ek jagah.</p>
+  <p id="me-msg" class="small muted" role="status"></p>
+  <div id="me-nolife" class="life-card" hidden><p data-i18n="me.nolife">Abhi koi zindagi save nahi.</p></div>
+  <div id="me-main" hidden>
+    <p id="me-sum" class="life-line"></p>
+    <div class="me-tabs" role="tablist" id="me-tabs"></div>
+    <div id="me-panel" class="me-panel" role="tabpanel" aria-live="polite"></div>
+  </div>
+  <p class="small muted">Life Mode ki tamam tasveerein aur dhunein khud banai hui hain (cartoon art aur WebAudio). Is mein asli tareekhi shakhsiyat nahi dikhai jati; agar aage dikhayi jayein to unke manazir par "Dramatized" ka badge lagega.</p>
+</section>
+<script src="/js/i18n.js"></script>
+<script src="/js/save.js"></script>
+<script src="/js/meta.js"></script>
+<script src="/js/life.js"></script>
+<script src="/js/me.js"></script>
+<%- include('../partials/footer') %>

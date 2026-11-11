@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+<section class="hero" id="hero" data-year="<%= nowYear %>">
+  <canvas id="portal" aria-hidden="true"></canvas>
+  <div class="css-portal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="hero-content">
+    <h1>Time<span>Warp</span></h1>
+    <p class="tagline">Explore the Past. Experience the Present. Discover the Future.</p>
+
+    <form id="warp-form" class="warp-form" action="/travel" method="get" novalidate>
+      <fieldset class="modes">
+        <legend class="sr">Travel mode</legend>
+        <label><input type="radio" name="mode" value="past" checked><span>Past</span></label>
+        <label><input type="radio" name="mode" value="present"><span>Present</span></label>
+        <label><input type="radio" name="mode" value="future"><span>Future</span></label>
+      </fieldset>
+      <div class="warp-fields">
+        <label>Year <input id="year" type="number" name="year" value="1947" min="-5000" max="3000" required></label>
+        <label>Destination
+          <select name="destinationId" id="destination">
+            <option value="">World / general view</option>
+            <% destinations.forEach((d) => { %><option value="<%= d.id %>" <%= d.name === 'Lahore' ? 'selected' : '' %>><%= d.name %>, <%= d.country %></option><% }) %>
+          </select>
+        </label>
+        <button class="btn primary" type="submit">Start Time Travel</button>
+      </div>
+      <p id="warp-error" class="error" role="alert" hidden></p>
+      <p class="muted small">Future journeys are speculative scenarios, not predictions of fact.</p>
+    </form>
+    <div class="save-bar" id="save-bar">
+      <a id="continue-btn" class="btn primary" href="<%= savedGame ? savedGame.url : '#' %>" <%- savedGame ? '' : 'hidden' %>>Continue<%= savedGame ? (savedGame.mode === 'world' ? ' (Live World)' : ' (Life Mode)') : '' %></a>
+      <a id="newlife-btn" class="btn ghost" href="/life?new=1" data-confirm-save="1">New Life</a>
+      <p class="small-note muted" id="save-note" <%- savedGame ? '' : 'hidden' %>><%= savedGame ? 'Aap ka progress account mein save hai.' : '' %></p>
+    </div>
+    <button id="portal-toggle" class="link-btn small" type="button" aria-pressed="false">Pause animation</button>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Featured destinations</h2>
+  <div class="grid">
+    <% featured.forEach((d) => { %>
+      <a class="card dest-card" href="/destinations/<%= d.id %>">
+        <div class="thumb" <% if (d.image_url) { %>style="background-image:url('<%= d.image_url %>')"<% } %>><span><%= d.name[0] %></span></div>
+        <h3><%= d.name %></h3><p class="muted"><%= d.country %></p>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Timeline preview</h2>
+  <div class="grid"><% timelinePreview.forEach((e) => { %><%- include('../partials/event-card', { e }) %><% }) %></div>
+  <p><a href="/timeline">Open full timeline →</a></p>
+</section>
+
+<section class="section">
+  <h2>Future scenarios <span class="badge-spec">Speculative</span></h2>
+  <div class="grid"><% predictions.forEach((p) => { %><%- include('../partials/prediction-card', { p }) %><% }) %></div>
+  <p><a href="/future">Explore the future →</a></p>
+</section>
+<script src="/js/save.js"></script>
+<script src="/js/home-save.js"></script>
+<script type="module" src="/js/portal.js"></script>
+<%- include('../partials/footer') %>

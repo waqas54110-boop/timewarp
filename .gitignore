@@ -1,0 +1,6 @@
+node_modules/
+.env
+*.log
+mobile/node_modules/
+mobile/www/
+mobile/android/

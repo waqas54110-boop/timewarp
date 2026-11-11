@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<section class="section future">
+  <h1>Future Explorer</h1>
+  <div class="notice">⚠ Everything on this page is <strong>speculative</strong>. These are imaginative scenarios with stated assumptions, not verified facts or forecasts.</div>
+  <form class="filters" method="get" action="/future">
+    <label>Category
+      <select name="category"><option value="">All</option>
+        <% categories.forEach((c) => { %><option <%= category && category.toLowerCase() === c.toLowerCase() ? 'selected' : '' %>><%= c %></option><% }) %>
+      </select></label>
+    <label>Up to year <input type="number" name="year" value="<%= year %>" min="2027" max="3000"></label>
+    <button class="btn" type="submit">Apply</button> <a class="btn ghost" href="/future">Reset</a>
+  </form>
+  <div class="grid"><% predictions.forEach((p) => { %><%- include('../partials/prediction-card', { p }) %><% }) %></div>
+  <% if (!predictions.length) { %><p class="empty">No scenarios match these filters.</p><% } %>
+</section>
+<%- include('../partials/footer') %>

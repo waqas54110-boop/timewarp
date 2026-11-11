@@ -1,0 +1,36 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Compare Then &amp; Now</h1>
+  <form class="filters" method="get" action="/compare">
+    <label>Destination
+      <select name="destinationId" required><option value="">Choose…</option>
+        <% destinations.forEach((d) => { %><option value="<%= d.id %>" <%= Number(destId) === Number(d.id) ? 'selected' : '' %>><%= d.name %></option><% }) %>
+      </select></label>
+    <label>Year 1 <input type="number" name="y1" value="<%= years[0] ?? 1947 %>" min="-5000" max="<%= nowYear %>" required></label>
+    <label>Year 2 <input type="number" name="y2" value="<%= years[1] ?? nowYear %>" min="-5000" max="<%= nowYear %>" required></label>
+    <label>Year 3 (optional) <input type="number" name="y3" value="<%= years[2] ?? '' %>" min="-5000" max="<%= nowYear %>"></label>
+    <button class="btn" type="submit">Compare</button>
+  </form>
+  <% if (panels && destination) { %>
+    <h2><%= destination.name %></h2>
+    <div class="compare-grid">
+      <% panels.forEach((p) => { %>
+        <article class="card">
+          <p class="year"><%= fy(p.year) %></p>
+          <% if (p.era) { %><p class="muted"><%= p.era.name %></p><% } %>
+          <% if (p.latest) { %>
+            <h3><a href="/events/<%= p.latest.id %>"><%= p.latest.title %></a></h3>
+            <p class="muted"><%= p.exact ? 'Documented in this year.' : 'Most recent documented event before this year (' + fy(p.latest.event_year) + '). Approximate context only.' %></p>
+            <p><%= p.latest.description %></p>
+          <% } else { %>
+            <p class="empty">No documented material for <%= destination.name %> before this year in our database yet.</p>
+          <% } %>
+        </article>
+      <% }) %>
+    </div>
+    <p class="muted small">Illustrative images, where present, are not exact photographs of the selected year.</p>
+  <% } else if (destId || years.length) { %>
+    <p class="empty">Choose a destination and at least two valid years.</p>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>
