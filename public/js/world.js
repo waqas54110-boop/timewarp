@@ -754,6 +754,10 @@ function doEmote(type) { if (!talk && !frozen() && !X.driving) { emote = { type,
 $('photo-btn').addEventListener('click', () => { photoNext = true; X.event('photo'); });
 $('act-interact').addEventListener('click', interact); $('act-fight').addEventListener('click', fight);
 $('act-wave').addEventListener('click', () => doEmote('wave')); $('act-dance').addEventListener('click', () => doEmote('dance'));
+const TOUCH = matchMedia('(pointer: coarse)').matches;
+promptEl.addEventListener('click', () => { if (!promptEl.hidden) interact(); });          // phone: tap the yellow prompt = press E
+const runBtn = $('act-run');                                                              // phone: Run on/off (Shift boosts cars too)
+if (runBtn) runBtn.addEventListener('click', () => { const on = !pad.has('run'); if (on) pad.add('run'); else pad.delete('run'); runBtn.setAttribute('aria-pressed', String(on)); runBtn.textContent = on ? 'Run: on' : 'Run: off'; runBtn.classList.toggle('on', on); });
 
 // ---------- keyboard / mouse / touch ----------
 const KEYMAP = { KeyW: 'f', ArrowUp: 'f', KeyS: 'b', ArrowDown: 'b', KeyA: 'l', ArrowLeft: 'l', KeyD: 'r', ArrowRight: 'r' };
@@ -776,6 +780,13 @@ document.querySelectorAll('.explore-pad button').forEach((b) => {
   b.addEventListener('pointerdown', (e) => { b.setPointerCapture(e.pointerId); pad.add(d); });
   ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((ev) => b.addEventListener(ev, () => pad.delete(d)));
 });
+const menuBtn = $('menu-toggle'), menuBox = $('world-menu');                              // phone: everything except Map lives in one Menu
+if (menuBtn && menuBox) {
+  const setMenu = (open) => { menuBox.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); };
+  menuBtn.addEventListener('click', () => setMenu(!menuBox.classList.contains('open')));
+  menuBox.addEventListener('click', (e) => { if (e.target.closest('button, a')) setTimeout(() => setMenu(false), 0); });
+  canvas.addEventListener('pointerdown', () => setMenu(false));
+}
 const viewBtn = $('view-toggle');
 viewBtn.addEventListener('click', () => { front = !front; viewBtn.setAttribute('aria-pressed', String(front)); viewBtn.textContent = front ? 'Back to normal view' : 'See my face'; });
 
@@ -887,7 +898,8 @@ function loop(now) {
   if (R) WV.cam(pos, dt);
 
   const tg = talk || isFrozen ? null : interactTarget(pos);
-  const msg = isFrozen ? 'Police are warning you…' : tg ? tg.text : '';
+  const msg0 = isFrozen ? 'Police are warning you…' : tg ? tg.text : '';
+  const msg = TOUCH ? msg0.replace('Press E', 'Tap here').replace('press E', 'tap here') : msg0;   // phones have no E key: the prompt itself is the button
   if (msg !== promptEl.textContent) promptEl.textContent = msg;
   promptEl.hidden = !msg;
   mapCanvas.hidden = !!shop || !!tower || (E !== null && (Math.abs(pos.x) > TOWN_R || Math.abs(pos.z) > TOWN_R));

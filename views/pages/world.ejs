@@ -4,6 +4,8 @@
   <div class="explore-top">
     <a class="btn ghost" href="<%= backHref %>">&larr; Back to scene</a>
     <p class="explore-title"><strong><%= destination ? destination.name : 'The World' %></strong> &middot; <%= fy(year) %><% if (mode === 'future') { %> &middot; <span class="badge-spec">Speculative scenario</span><% } %></p>
+    <button id="menu-toggle" class="btn ghost menu-toggle" type="button" aria-expanded="false" aria-controls="world-menu">&#9776; Menu</button>
+    <div id="world-menu" class="world-menu">
     <% const jump = mode === 'future' ? { mode: 'present', year: new Date().getFullYear(), label: 'Back to ' + new Date().getFullYear() } : { mode: 'future', year: 2050, label: 'Fly to 2050' }; %>
     <a class="btn ghost" href="/world?mode=<%= jump.mode %>&year=<%= jump.year %><%= destination ? '&destinationId=' + destination.id : '' %>"><%= jump.label %></a>
     <button id="face-toggle" class="btn ghost" type="button" aria-expanded="false" aria-controls="face-panel">Your look</button>
@@ -13,6 +15,7 @@
     <button id="rec-btn" class="btn ghost" type="button" aria-pressed="false">⏺ Record</button>
     <button id="day-btn" class="btn ghost" type="button" disabled title="Thori der ghoomein, phir aaj ki cartoon video ban sakti hai">🎬 Aaj ki video</button>
     <button id="view-toggle" class="btn ghost" type="button" aria-pressed="false">See my face</button>
+    </div>
   </div>
 
   <aside id="face-panel" class="face-panel" aria-label="Customise your avatar" hidden>
@@ -51,10 +54,11 @@
   </aside>
 
   <div class="world-actions" aria-label="Actions">
-    <button id="act-interact" class="btn ghost" type="button">E · Talk / Enter</button>
-    <button id="act-fight" class="btn ghost" type="button">F · Fight</button>
-    <button id="act-wave" class="btn ghost" type="button">1 · Wave</button>
-    <button id="act-dance" class="btn ghost" type="button">2 · Dance</button>
+    <button id="act-interact" class="btn ghost" type="button"><span class="kbd">E · </span>Talk / Enter</button>
+    <button id="act-fight" class="btn ghost" type="button"><span class="kbd">F · </span>Fight</button>
+    <button id="act-wave" class="btn ghost" type="button"><span class="kbd">1 · </span>Wave</button>
+    <button id="act-dance" class="btn ghost" type="button"><span class="kbd">2 · </span>Dance</button>
+    <button id="act-run" class="btn ghost" type="button" aria-pressed="false">Run: off</button>
   </div>
 
   <button id="sky-chip" class="sky-chip" type="button" aria-live="off">--:--</button>

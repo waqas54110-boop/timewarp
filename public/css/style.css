@@ -340,3 +340,29 @@ tr.me td{background:#17306a55;font-weight:600}
 .me-board th, .me-board td { padding: .35rem .5rem; text-align: left; border-bottom: 1px solid rgba(128,128,128,.2); }
 .me-wide { width: 100%; min-height: 6rem; }
 @media (max-width: 480px) { .me-tabs button { flex: 1 1 45%; } }
+
+/* ===== v13 phone layout: one tidy top bar (Home, Menu, Map), big touch buttons ===== */
+.menu-toggle{display:none}
+.world-menu{display:contents}
+.world-menu,.world-menu>*{pointer-events:auto}
+.world-prompt{pointer-events:auto;cursor:pointer}
+.world-actions .btn.on{background:#4f46e5;border-color:#a5b4fc;color:#fff}
+@media (pointer:coarse),(max-width:820px){
+  .menu-toggle{display:inline-block}
+  .world .explore-top{flex-wrap:nowrap;gap:.45rem;padding-left:.6rem;padding-right:.6rem}
+  .world .explore-title{display:none}
+  .world .explore-top .btn{padding:.45rem .75rem;font-size:.9rem;white-space:nowrap}
+  .world-menu{display:none;position:absolute;top:calc(max(1rem,env(safe-area-inset-top)) + 3rem);left:.6rem;z-index:8;flex-direction:column;align-items:stretch;gap:.4rem;padding:.6rem;min-width:13rem;background:#0a1030f5;border:1px solid var(--line);border-radius:14px;max-height:calc(100dvh - 7rem);overflow:auto}
+  .world-menu.open{display:flex}
+  .world-menu .btn,.world-menu .paint-label{width:100%;text-align:left;box-sizing:border-box}
+  .world-menu .paint-label{display:flex;flex-direction:row;align-items:center;gap:.6rem;padding:.3rem .5rem}.world-menu .paint-label input{width:3rem;height:2rem}
+  .explore-hint{display:none}
+  .explore-pad{grid-template-columns:repeat(3,3.3rem);grid-template-rows:repeat(2,3.3rem);right:.8rem;bottom:max(1rem,env(safe-area-inset-bottom));opacity:.9}
+  .world-actions{left:.8rem;bottom:max(1rem,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(2,auto);gap:.4rem;max-width:none;align-items:stretch}
+  .world-actions .btn{padding:.55rem .6rem;font-size:.92rem;min-height:3rem;white-space:nowrap}
+  .world-actions #act-interact{grid-column:1 / -1;background:linear-gradient(135deg,#4f46e5,#a855f7);border:0;color:#fff;font-weight:700;font-size:1.1rem;min-height:3.4rem}
+  .world-actions .kbd{display:none}
+  .world-ticker{left:.6rem;right:.6rem;bottom:12.2rem;transform:none;max-width:none;font-size:.8rem;border-radius:14px}
+  .world-prompt{left:.6rem;right:.6rem;bottom:15.6rem;transform:none;max-width:none;text-align:center;font-size:.9rem;border-radius:16px}
+  .mission{top:8.2rem;bottom:auto;right:.5rem;width:52%;font-size:.72rem}
+}
