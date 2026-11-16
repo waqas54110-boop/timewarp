@@ -66,6 +66,22 @@ function copyThree() {
   fs.mkdirSync(addonDir, { recursive: true });
   const util = fs.readFileSync(path.join(three, 'examples', 'jsm', 'utils', 'BufferGeometryUtils.js'), 'utf8');
   fs.writeFileSync(path.join(addonDir, 'BufferGeometryUtils.js'), util.replace(/from\s+['"]three['"]/g, "from '/vendor/three/three.module.js'"));
+
+  // models.js imports GLTFLoader + SkeletonUtils (real 3D people). Without them the whole world.js module fails to load
+  // and the Live World stays on "Building the street..." with a black screen.
+  const rewrite = (src) => src.replace(/from\s+['"]three['"]/g, "from '/vendor/three/three.module.js'");
+  for (const rel of [['loaders', 'GLTFLoader.js'], ['utils', 'SkeletonUtils.js']]) {
+    const dir = path.join(out, 'vendor', 'three-addons', rel[0]);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, rel[1]), rewrite(fs.readFileSync(path.join(three, 'examples', 'jsm', rel[0], rel[1]), 'utf8')));
+  }
+}
+
+// The server builds GET /media/models/index.json on the fly; the offline app has no server, so write it as a static file.
+function writeModelIndex() {
+  const ls = (d) => { try { return fs.readdirSync(path.join(out, 'media', 'models', d)).filter((f) => /\.glb$/i.test(f)).sort(); } catch (e) { return []; } };
+  fs.mkdirSync(path.join(out, 'media', 'models'), { recursive: true });
+  fs.writeFileSync(path.join(out, 'media', 'models', 'index.json'), JSON.stringify({ models: ls(''), anims: ls('anims') }));
 }
 
 async function main() {
@@ -78,6 +94,7 @@ async function main() {
     filter: (src) => !['sw.js', 'offline.html'].includes(path.relative(pub, src)),
   });
   copyThree();
+  writeModelIndex();
 
   for (const [view, file, data] of PAGES) {
     const html = await render(path.join(root, 'views', 'pages', view), { ...BASE, ...data });
@@ -87,7 +104,7 @@ async function main() {
 
   const must = ['index.html', 'life.html', 'me.html', 'world-present.html', 'world-2050.html', 'css/style.css', 'js/world.js', 'js/life.js',
     'js/sprites.js', 'js/sprite-data.js', 'js/models.js', 'media/sprites/male.png', 'media/sprites/female.png', 'media/sprites/police.png', 'media/sprites/v-taxi.png',
-    'vendor/three/three.module.js', 'vendor/three-addons/utils/BufferGeometryUtils.js', 'media/world-ids.png', 'media/world-sdf.png', 'data/countries.json'];
+    'vendor/three/three.module.js', 'vendor/three-addons/utils/BufferGeometryUtils.js', 'vendor/three-addons/loaders/GLTFLoader.js', 'vendor/three-addons/utils/SkeletonUtils.js', 'media/models/index.json', 'media/world-ids.png', 'media/world-sdf.png', 'data/countries.json'];
   const missing = must.filter((f) => !fs.existsSync(path.join(out, f)));
   if (missing.length) throw new Error('Offline bundle is missing: ' + missing.join(', '));
   console.log('Offline bundle ready in mobile/www (' + fs.readdirSync(out).length + ' entries)');
