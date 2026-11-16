@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+<section class="globe-page" id="globe-page" data-now="<%= nowYear %>">
+  <div class="globe-stage">
+    <canvas id="globe-canvas" aria-label="Interactive 3D globe of historical events. Use the list on the right for a keyboard-friendly version." role="img"></canvas>
+    <p id="globe-status" class="globe-status" role="status">Loading the globe…</p>
+  </div>
+  <aside class="globe-panel" aria-label="Globe controls and events">
+    <h1>Time Globe</h1>
+    <label>Year: <strong id="year-label"></strong>
+      <input id="year-range" type="range" min="-3500" max="<%= nowYear %>" value="1947" step="1" aria-describedby="globe-hint">
+    </label>
+    <label>Show events within
+      <select id="window-select">
+        <option value="10">±10 years</option><option value="50" selected>±50 years</option>
+        <option value="200">±200 years</option><option value="all">All years</option>
+      </select>
+    </label>
+    <p id="globe-hint" class="muted small">Drag to rotate, scroll to zoom, click a glowing pin. Only places with known coordinates appear.</p>
+    <button id="globe-spin" class="link-btn small" type="button" aria-pressed="false">Pause rotation</button>
+    <div id="globe-list" aria-live="polite"></div>
+  </aside>
+</section>
+<script type="module" src="/js/globe.js"></script>
+<%- include('../partials/footer') %>

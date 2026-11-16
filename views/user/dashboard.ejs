@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>My journeys</h1>
+  <% if (profile && profile.stats) { %>
+  <p class="muted">🔥 Streak: <strong><%= profile.stats.currentStreak %></strong> day(s) · best <%= profile.stats.longestStreak %> · <%= profile.stats.journeys %> journeys · <a href="/leaderboard">Leaderboard</a></p>
+  <h2>Badges</h2>
+  <% if (!profile.badges.length) { %><p class="empty">No badges yet. Take a journey to earn your first one.</p><% } else { %>
+  <div class="grid badges"><% profile.badges.forEach((b) => { %>
+    <article class="card badge-card"><p class="badge-icon" aria-hidden="true"><%= b.icon %></p><h3><%= b.name %></h3><p class="muted"><%= b.desc %></p></article>
+  <% }) %></div><% } %>
+  <h2>Saved journeys</h2>
+  <% } %>
+  <% if (!journeys.length) { %><p class="empty">You haven't saved any journeys yet. <a href="/">Start one</a>.</p><% } %>
+  <div class="grid">
+    <% journeys.forEach((j) => { %>
+      <article class="card" data-journey="<%= j.id %>">
+        <p class="year"><%= j.travel_type.toUpperCase() %> · <%= fy(j.selected_year) %></p>
+        <h3><%= j.destination_name || 'The World' %></h3>
+        <a class="btn ghost" href="/travel?mode=<%= j.travel_type %>&year=<%= j.selected_year %><%= j.destination_id ? '&destinationId=' + j.destination_id : '' %>">Revisit</a>
+        <button class="btn ghost delete-journey" type="button" data-id="<%= j.id %>">Delete</button>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('../partials/footer') %>

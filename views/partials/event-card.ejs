@@ -1,0 +1,6 @@
+<article class="card event-card">
+  <p class="year"><%= fy(e.event_year) %><% if (e.category) { %> · <span class="tag"><%= e.category %></span><% } %></p>
+  <h3><a href="/events/<%= e.id %>"><%= e.title %></a></h3>
+  <% if (e.destination_name) { %><p class="muted"><%= e.destination_name %><% if (e.country) { %>, <%= e.country %><% } %></p><% } %>
+  <p><%= (e.description || '').slice(0, 160) %><%= (e.description || '').length > 160 ? '…' : '' %></p>
+</article>

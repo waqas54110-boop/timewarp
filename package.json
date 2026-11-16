@@ -1,0 +1,33 @@
+{
+  "name": "timewarp",
+  "version": "1.0.0",
+  "description": "TimeWarp - 3D Time Travel Website (Node.js, Express, EJS, Three.js, PostgreSQL)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "migrate": "node database/migrate.js",
+    "seed": "node database/migrate.js --seed",
+    "make-admin": "node scripts/makeAdmin.js",
+    "test": "node --test \"tests/*.test.js\""
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "pg": "^8.23.1",
+    "ws": "^8.18.0",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1"
+  }
+}

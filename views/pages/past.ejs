@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Past Explorer</h1>
+  <p class="lead">Browse documented events by era, year, place and category. Dates for ancient events are approximate.</p>
+  <div class="chips"><% eras.forEach((e) => { %><a class="chip" href="/past?from=<%= e.start_year %>&to=<%= e.end_year %>" title="<%= e.description %>"><%= e.name %></a><% }) %></div>
+  <%- include('../partials/filters', { action: '/past' }) %>
+  <% errors.forEach((m) => { %><p class="error"><%= m %></p><% }) %>
+  <div class="grid">
+    <% events.forEach((e) => { %><%- include('../partials/event-card', { e }) %><% }) %>
+  </div>
+  <% if (!events.length) { %><p class="empty">No events match these filters. Try widening the year range.</p><% } %>
+  <%- include('../partials/pager') %>
+</section>
+<%- include('../partials/footer') %>

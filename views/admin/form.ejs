@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<section class="section narrow">
+  <h1><%= title %></h1>
+  <% errors.forEach((m) => { %><p class="error"><%= m %></p><% }) %>
+  <form method="post" action="/admin/<%= key %><%= id ? '/' + id : '' %>" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <% r.fields.forEach((f) => { const v = values[f.name] ?? ''; %>
+      <label><%= f.label %><%= f.required ? ' *' : '' %>
+        <% if (f.type === 'textarea') { %><textarea name="<%= f.name %>" rows="5"><%= v %></textarea>
+        <% } else { %><input name="<%= f.name %>" type="<%= f.type === 'int' ? 'number' : 'text' %>" value="<%= v %>" <%= f.required ? 'required' : '' %>><% } %>
+      </label>
+    <% }) %>
+    <button class="btn primary">Save</button> <a class="btn ghost" href="/admin/<%= key %>">Cancel</a>
+  </form>
+</section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Present Explorer</h1>
+  <p class="lead">Places as they are today (<%= nowYear %>). Time-sensitive details should be checked against current sources.</p>
+  <div class="grid">
+    <% destinations.forEach((d) => { %>
+      <article class="card">
+        <h3><a href="/destinations/<%= d.id %>"><%= d.name %></a></h3>
+        <p class="muted"><%= d.country %></p>
+        <p><%= d.description %></p>
+        <a class="btn ghost" href="/travel?mode=present&year=<%= nowYear %>&destinationId=<%= d.id %>">Travel here now</a>
+      </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('../partials/footer') %>

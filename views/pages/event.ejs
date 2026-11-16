@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<article class="section narrow">
+  <p class="year"><%= fy(event.event_year) %><% if (event.category) { %> · <span class="tag"><%= event.category %></span><% } %></p>
+  <h1><%= event.title %></h1>
+  <% if (event.destination_name) { %><p class="muted">Location: <a href="/destinations/<%= event.destination_id %>"><%= event.destination_name %></a>, <%= event.country %></p><% } %>
+  <% if (event.image_url) { %><figure><img src="<%= event.image_url %>" alt="<%= event.title %>" loading="lazy"></figure><% } %>
+  <p><%= event.description %></p>
+  <% media.forEach((m) => { %><figure><img src="<%= m.image_url %>" alt="<%= m.caption || event.title %>" loading="lazy"><figcaption><%= m.caption %><% if (m.credit) { %> · <%= m.credit %><% } %></figcaption></figure><% }) %>
+  <% if (event.source_url) { %><p><strong>Source:</strong> <a href="<%= event.source_url %>" rel="noopener noreferrer" target="_blank"><%= event.source_url %></a></p><% } else { %><p class="muted">Source reference pending.</p><% } %>
+  <% if (related.length) { %><h2>Related events</h2><div class="grid"><% related.forEach((e) => { %><%- include('../partials/event-card', { e }) %><% }) %></div><% } %>
+</article>
+<%- include('../partials/footer') %>

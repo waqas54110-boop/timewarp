@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<section class="explore" id="explore" data-mode="<%= mode %>" data-year="<%= year %>" data-seed="<%= destination ? destination.id : 0 %>" <% if (modelUrl) { %>data-model="<%= modelUrl %>"<% } %>>
+  <canvas id="explore-canvas" aria-label="First-person 3D view of <%= destination ? destination.name : 'the world' %>, <%= fy(year) %>" role="img"></canvas>
+  <div class="explore-top">
+    <a class="btn ghost" href="<%= backHref %>">&larr; Back to scene</a>
+    <p class="explore-title"><strong><%= destination ? destination.name : 'The World' %></strong> &middot; <%= fy(year) %><% if (mode === 'future') { %> &middot; <span class="badge-spec">Speculative scenario</span><% } %></p>
+  </div>
+  <p id="explore-status" class="explore-status" role="status">Building the city…</p>
+  <p class="explore-hint">Drag to look around &middot; W A S D or arrow keys to walk &middot; Shift to run</p>
+  <div class="explore-pad" aria-label="Walk controls">
+    <button type="button" data-dir="f" aria-label="Walk forward">&uarr;</button>
+    <button type="button" data-dir="l" aria-label="Walk left">&larr;</button>
+    <button type="button" data-dir="b" aria-label="Walk backward">&darr;</button>
+    <button type="button" data-dir="r" aria-label="Walk right">&rarr;</button>
+  </div>
+  <noscript><p class="error">3D exploring needs JavaScript. <a href="<%= backHref %>">Back to the scene</a></p></noscript>
+</section>
+<script type="module" src="/js/explore.js"></script>
+<%- include('../partials/footer') %>

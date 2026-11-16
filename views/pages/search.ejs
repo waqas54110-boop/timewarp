@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Search</h1>
+  <form class="filters" method="get" action="/search"><label>Query <input type="search" name="q" maxlength="100" value="<%= q %>" required></label><button class="btn">Search</button></form>
+  <% if (results) { const n = results.events.length + results.destinations.length + results.predictions.length; %>
+    <% if (!n) { %><p class="empty">No results for “<%= q %>”. Try a place, year or category such as “Lahore” or “architecture”.</p><% } %>
+    <% if (results.destinations.length) { %><h2>Destinations</h2><ul><% results.destinations.forEach((d) => { %><li><a href="/destinations/<%= d.id %>"><%= d.name %></a>, <%= d.country %></li><% }) %></ul><% } %>
+    <% if (results.events.length) { %><h2>Events</h2><ul><% results.events.forEach((e) => { %><li><a href="/events/<%= e.id %>"><%= e.title %></a> (<%= fy(e.event_year) %>)</li><% }) %></ul><% } %>
+    <% if (results.predictions.length) { %><h2>Future scenarios <span class="badge-spec">Speculative</span></h2><ul><% results.predictions.forEach((p) => { %><li><%= p.title %> (<%= p.target_year %>)</li><% }) %></ul><% } %>
+  <% } %>
+</section>
+<%- include('../partials/footer') %>

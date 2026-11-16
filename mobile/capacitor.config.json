@@ -1,0 +1,6 @@
+{
+  "appId": "app.timewarp.game",
+  "appName": "TimeWarp",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}

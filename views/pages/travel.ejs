@@ -1,0 +1,98 @@
+<%- include('../partials/header') %>
+<% if (!journey) { %>
+<section class="section narrow" id="journey">
+  <h1>We couldn't start that journey</h1>
+  <% errors.forEach((m) => { %><p class="error"><%= m %></p><% }) %>
+  <p><a class="btn primary" href="/">Back to the portal</a></p>
+</section>
+<% } else {
+  const place = journey.destination ? journey.destination.name : 'The World';
+  const scene = journey.scene;
+%>
+<%# Without JavaScript the scene is a normal page section and the details are shown inline. %>
+<noscript><style>
+  body:has(.scene){overflow:auto!important}
+  .scene{position:relative!important;min-height:60vh}
+  .scene-top,#details-toggle,#party-toggle,.party-panel{display:none!important}
+  .details-sheet[hidden]{display:block!important;position:static!important;background:none!important}
+  .details-inner{max-height:none!important;border-radius:0!important}
+  #details-close{display:none}
+</style></noscript>
+
+<section class="scene" id="journey" data-mode="<%= journey.mode %>" data-year="<%= journey.year %>" data-destination="<%= journey.destination ? journey.destination.id : '' %>" aria-label="<%= place %>, <%= fy(journey.year) %>">
+
+  <% if (newBadges && newBadges.length) { %><div class="toast" role="status"><% newBadges.forEach((b) => { %><p><%= b.icon %> New badge: <strong><%= b.name %></strong></p><% }) %></div><% } %>
+  <div class="scene-media">
+    <canvas id="scene-canvas" class="scene-layer" aria-hidden="true"></canvas>
+    <% if (scene && scene.type === 'video') { %>
+      <video id="scene-video" class="scene-layer" src="<%= scene.url %>" <% if (scene.poster) { %>poster="<%= scene.poster %>"<% } %> muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <% } else if (scene) { %>
+      <img id="scene-img" class="scene-layer" src="<%= scene.url %>" alt="<%= scene.caption || place %>">
+    <% } %>
+  </div>
+  <div class="scene-shade" aria-hidden="true"></div>
+
+  <div class="scene-top">
+    <a class="btn ghost" href="/">&larr; Portal</a>
+    <div class="scene-controls">
+      <button id="scene-pause" class="btn ghost" type="button" aria-pressed="false">Pause</button>
+      <% if (scene && scene.type === 'video') { %><button id="scene-mute" class="btn ghost" type="button" aria-pressed="true">Sound off</button><% } %>
+    </div>
+  </div>
+
+  <div class="scene-caption">
+    <% if (journey.mode === 'future') { %><p class="badge-spec">Speculative scenario &middot; not fact</p><% } %>
+    <p class="scene-kicker"><%= journey.mode.toUpperCase() %><% if (journey.era) { %> &middot; <%= journey.era.name %><% } %></p>
+    <p class="scene-year" id="scene-year" data-label="<%= fy(journey.year) %>"><%= fy(journey.year) %></p>
+    <h1><%= place %></h1>
+    <% if (journey.destination && journey.destination.country) { %><p class="scene-country"><%= journey.destination.country %></p><% } %>
+    <% if (scene && (scene.caption || scene.credit)) { %><p class="scene-credit"><%= [scene.caption, scene.credit].filter(Boolean).join(' · ') %></p><% } %>
+
+    <p class="actions scene-actions">
+      <button id="details-toggle" class="btn primary" type="button" aria-haspopup="dialog" aria-controls="details" aria-expanded="false">Show details</button>
+      <% if (user) { %><button id="save-journey" class="btn ghost" type="button">Save journey</button><span id="save-status" role="status"></span>
+      <% } else { %><a class="btn ghost" href="/auth/login">Log in to save</a><% } %>
+      <a class="btn ghost" href="/explore?mode=<%= journey.mode %>&year=<%= journey.year %><%= journey.destination ? '&destinationId=' + journey.destination.id : '' %>">Explore in 3D</a>
+      <a class="btn ghost" href="/world?mode=<%= journey.mode %>&year=<%= journey.year %><%= journey.destination ? '&destinationId=' + journey.destination.id : '' %>">Walk as yourself</a>
+      <button id="party-toggle" class="btn ghost" type="button" aria-controls="party-panel" aria-expanded="false">Time Party</button>
+      <a class="btn ghost" href="/">New journey</a>
+    </p>
+  </div>
+
+  <aside class="party-panel" id="party-panel" aria-label="Time Party" hidden>
+    <div class="party-head"><strong>Time Party</strong> <span id="party-count" class="muted small"></span><button id="party-close" class="link-btn small" type="button">Hide</button></div>
+    <div id="party-start"><p class="small">Open this exact scene together with friends: see each other's cursors and chat live.</p><button id="party-create" class="btn primary" type="button">Start a party</button></div>
+    <div id="party-live" hidden>
+      <p class="small">Party code <strong id="party-code"></strong> &middot; <button id="party-copy" class="link-btn small" type="button">Copy invite link</button></p>
+      <ul id="party-log" class="party-log" aria-live="polite"></ul>
+      <form id="party-form" class="party-form"><input id="party-input" maxlength="200" autocomplete="off" placeholder="Say something…" aria-label="Chat message"><button class="btn primary" type="submit">Send</button></form>
+    </div>
+    <p id="party-msg" class="small muted" role="status"></p>
+  </aside>
+
+  <div class="details-sheet" id="details" role="dialog" aria-modal="true" aria-labelledby="details-title" hidden>
+    <div class="details-inner">
+      <div class="details-head">
+        <h2 id="details-title"><%= place %> &middot; <%= fy(journey.year) %></h2>
+        <button id="details-close" class="btn ghost" type="button">Close &times;</button>
+      </div>
+
+      <% if (journey.era) { %><p>Era: <strong><%= journey.era.name %></strong>. <%= journey.era.description %></p><% } %>
+
+      <% if (journey.mode === 'future') { %>
+        <div class="notice">⚠ <strong>Speculative scenarios.</strong> Nothing below is a verified fact. These are imaginative possibilities with stated assumptions.</div>
+        <div class="grid"><% journey.predictions.forEach((p) => { %><%- include('../partials/prediction-card', { p }) %><% }) %></div>
+      <% } else { %>
+        <% if (journey.destination) { %><p><%= journey.destination.description %></p><% } %>
+        <% if (journey.approximate && journey.destination) { %><p class="notice">We have no documented event for this place close to <%= fy(journey.year) %>. Showing the nearest material; it may be from a different period.</p><% } %>
+        <% if (journey.events.length) { %><h3>Events at this destination</h3><div class="grid"><% journey.events.forEach((e) => { %><%- include('../partials/event-card', { e }) %><% }) %></div><% } %>
+        <% if (journey.worldEvents.length) { %><h3>Elsewhere around <%= fy(journey.year) %></h3><div class="grid"><% journey.worldEvents.forEach((e) => { %><%- include('../partials/event-card', { e }) %><% }) %></div><% } %>
+        <% if (!journey.events.length && !journey.worldEvents.length) { %><p class="empty">No documented events close to this year yet.</p><% } %>
+      <% } %>
+    </div>
+  </div>
+</section>
+<script src="/js/scene.js" defer></script>
+<script src="/js/party.js" defer></script>
+<% } %>
+<%- include('../partials/footer') %>

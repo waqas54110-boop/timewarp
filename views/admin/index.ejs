@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+<section class="section">
+  <h1>Admin</h1>
+  <div class="grid">
+    <% Object.entries(resources).forEach(([k, r]) => { %>
+      <a class="card" href="/admin/<%= k %>"><h3><%= r.label %></h3><p class="year"><%= counts[k] %> records</p></a>
+    <% }) %>
+  </div>
+  <h2>Recent changes</h2>
+  <% if (!log.length) { %><p class="empty">No changes logged yet.</p><% } %>
+  <ul><% log.forEach((l) => { %><li><%= new Date(l.created_at).toISOString().slice(0, 16).replace('T', ' ') %> · <%= l.username || 'unknown' %> · <%= l.action %> <%= l.resource %> #<%= l.record_id %></li><% }) %></ul>
+</section>
+<%- include('../partials/footer') %>
