@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meri Duniya · TimeWarp</title>
+  <meta name="description" content="TimeWarp – explore the past, present and future in an interactive 3D time portal.">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TimeWarp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/css/style.css?v=18">
+</head>
+<body data-csrf="" data-auth="0">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="/index.html" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>
+</header>
+<main id="main">
+
+<section class="life" id="me" data-i18n-scope>
+  <p class="life-toprow"><select data-lang-select aria-label="Language" class="lang-select"></select> <a class="btn ghost small" href="/life.html" data-i18n="back.life">Life Mode par wapas</a></p>
+  <h1 data-i18n="me.title">Meri Duniya</h1>
+  <p class="lead" data-i18n="me.lead">Aap ki zindagi ka ghar, khandaan, diary, khwab aur Time Machine ek jagah.</p>
+  <p id="me-msg" class="small muted" role="status"></p>
+  <div id="me-nolife" class="life-card" hidden><p data-i18n="me.nolife">Abhi koi zindagi save nahi.</p></div>
+  <div id="me-main" hidden>
+    <p id="me-sum" class="life-line"></p>
+    <div class="me-tabs" role="tablist" id="me-tabs"></div>
+    <div id="me-panel" class="me-panel" role="tabpanel" aria-live="polite"></div>
+  </div>
+  <p class="small muted">Life Mode ki tamam tasveerein aur dhunein khud banai hui hain (cartoon art aur WebAudio). Is mein asli tareekhi shakhsiyat nahi dikhai jati; agar aage dikhayi jayein to unke manazir par "Dramatized" ka badge lagega.</p>
+</section>
+<script src="/js/i18n.js"></script>
+<script src="/js/save.js"></script>
+<script src="/js/meta.js"></script>
+<script src="/js/life.js"></script>
+<script src="/js/me.js"></script>
+</main>
+<footer class="site-footer">
+  <p><strong>TimeWarp</strong> is an educational and entertainment experience. History is presented from cited sources; future pages are <em>speculative scenarios</em>, not facts.</p>
+  
+  
+</footer>
+<script src="/js/main.js" defer></script>
+</body>
+</html>
+
