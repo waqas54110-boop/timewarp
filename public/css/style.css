@@ -402,3 +402,23 @@ tr.me td{background:#17306a55;font-weight:600}
 @keyframes sc-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @media (prefers-reduced-motion: reduce) { .story-cine, .sc-icon { animation: none; } }
+
+/* ---------- phone: big round E / F buttons in the thumb zone (above the walk pad); the "Press E to..." hint is tappable ---------- */
+@media (pointer:coarse), (max-width:900px) {
+  .world-actions { display: contents; }
+  #act-interact, #act-fight { position: absolute; z-index: 5; width: 4.6rem; height: 4.6rem; min-width: 0; min-height: 0; padding: 0; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; background: #0a1030cc; border: 2px solid #ffffff55; color: #fff; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; }
+  #act-interact { right: .7rem; bottom: 10.2rem; }
+  #act-fight { right: 5.7rem; bottom: 10.2rem; }
+  #act-interact .act-ico, #act-fight .act-ico { font-size: 1.7rem; }
+  #act-interact small, #act-fight small { font-size: .7rem; opacity: .85; margin-top: 2px; font-weight: 700; }
+  #act-interact.hot { background: #facc15; color: #111; border-color: #fff; box-shadow: 0 0 0 4px #facc1566, 0 0 22px #facc15; animation: act-pulse 1s ease-in-out infinite; }
+  #act-interact:active, #act-fight:active { transform: scale(.92); }
+  #act-wave, #act-dance { position: absolute; left: .6rem; z-index: 3; min-width: 48px; min-height: 48px; }
+  #act-wave { bottom: 1rem; } #act-dance { bottom: 4.6rem; }
+  .world-prompt { pointer-events: auto; cursor: pointer; background: #facc15; color: #111; border-color: #fff; padding: .55rem 1rem; min-height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 18px #facc1599; left: .6rem; right: 10.9rem; bottom: 10.4rem; transform: none; max-width: none; font-size: .88rem; border-radius: 18px; }
+  .world-ticker { bottom: 15.6rem; }
+}
+@keyframes act-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+/* portal intro: only the walk pad stays on top of the lab picture */
+.world.portal-intro > *:not(#world-canvas):not(.explore-pad) { visibility: hidden !important; }

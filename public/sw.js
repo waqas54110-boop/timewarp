@@ -1,6 +1,6 @@
 // TimeWarp service worker: makes the app installable and shows a friendly page when offline.
 // It caches only static files (css, js, icons, 3D library). Pages, API calls, logins and chat are never cached.
-const VERSION = 'timewarp-v22';
+const VERSION = 'timewarp-v23';
 const PRECACHE = ['/offline.html', '/css/style.css', '/icons/icon-192.png', '/icons/icon-512.png', '/manifest.webmanifest'];
 const STATIC = /^\/(css|js|icons|vendor|data)\/|^\/media\/(world-|sprites\/)/;
 
