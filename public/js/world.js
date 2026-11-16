@@ -1,7 +1,8 @@
 import * as THREE from '/vendor/three/three.module.js';
-import { create as createExtras } from '/js/extras.js?v=14';
+import { create as createExtras } from '/js/extras.js?v=15';
 import { createWorldVideo } from '/js/world-video.js';
 import { createSky } from '/js/world-sky.js';
+import { createPortalIntro } from '/js/portal-intro.js?v=1';
 import { createEarth } from '/js/world-earth.js?v=12b';
 import * as Sprites from '/js/sprites.js?v=16';
 import { mergeGeometries } from '/vendor/three-addons/utils/BufferGeometryUtils.js';
@@ -928,6 +929,18 @@ function loop(now) {
   perfAcc += (now - (loop.p || now)) / 1000; perfN++; loop.p = now;
   if (perfAcc > 2.5) { const avg = perfAcc / perfN; if (avg > 0.036 && qScale > 0.55) { qScale = Math.max(0.55, qScale - 0.15); resize(); } else if (avg < 0.019 && qScale < 1) { qScale = Math.min(1, qScale + 0.1); resize(); } perfAcc = 0; perfN = 0; }
 
+  if (PI && PI.active) {                                // time-lab: walk to the portal and jump in
+    const st = PI.step(dt, new Set([...keys, ...pad]));
+    moving = st.moving; if (st.moving) phase += dt * (st.run ? 11 : 6.5); emote = null; punchT = 0;
+    animatePlayer(dt, false); if (st.airborne) { player.armL.rotation.x = player.armR.rotation.x = -2.8; }
+    if (hero.actor) {
+      if (!hero.shown) { hero.shown = true; heroBlocky.forEach((c) => { c.visible = false; }); hero.actor.root.visible = true; }
+      hero.actor.update(st.airborne ? 'handsup' : st.moving ? (st.run ? 'run' : 'walk') : 'idle', st.moving ? (st.run ? 3 : 1.2) : 0, t);
+    } else if (!hero.shown) { hero.shown = true; heroBlocky.forEach((c) => { c.visible = true; }); }
+    Sprites.beginFrame(camera); Sprites.updateBillboards(t, dt);
+    mapCanvas.hidden = true; PI.render();
+    return;
+  }
   const pos = player.group.position, isFrozen = frozen();
   const dirs = new Set([...keys, ...pad]);
   const f = (dirs.has('f') ? 1 : 0) - (dirs.has('b') ? 1 : 0), s = (dirs.has('r') ? 1 : 0) - (dirs.has('l') ? 1 : 0);
@@ -1041,7 +1054,7 @@ const Save = window.TimeWarpSave;
 if (Save) {
   let ready = false;
   const snap = () => ({ mode, year: YEAR, destinationId: Number(root.dataset.seed) || null, x: player.group.position.x, z: player.group.position.z, money: wallet, mission: X.mission() });
-  const saveNow = () => { if (ready) Save.save('world', snap()); };
+  const saveNow = () => { if (ready && !(typeof PI !== 'undefined' && PI && PI.active)) Save.save('world', snap()); };
   document.addEventListener('timewarp:progress', saveNow);
   setInterval(saveNow, 20000);
   if (new URLSearchParams(location.search).get('continue') === '1') {
@@ -1067,5 +1080,11 @@ const WV = createWorldVideo({ THREE, scene, camera, renderer, canvas, root, tick
 statusEl.textContent = `${sim.agents.length} people (shopkeepers, police and shoppers) and ${vehicles.length} vehicles are out. Walk up to someone and press E to talk, or into a shop door to go inside.`;
 setTimeout(() => { statusEl.hidden = true; }, 5000);
 window.__tw = { get tower() { return tower; }, enterTower, doors, interactTarget, THREE, renderer, scene, camera, player, X, sim, solids, vehicles, get yaw() { return yaw; }, set yaw(v) { yaw = v; }, get dist() { return dist; }, set dist(v) { dist = v; } };   // debug / test hook
+// ---------- Portal intro: the game starts in the time-lab, the hero walks to the portal and jumps into the chosen era ----------
+let PI = null;
+if (new URLSearchParams(location.search).get('continue') !== '1' && !/[?&]nointro=1/.test(location.search)) {
+  PI = createPortalIntro({ THREE, renderer, camera, player, mode, year: YEAR, onDone: () => { PI = null; yaw = 0; pitch = 0.35; if (tickerEl) tickerEl.textContent = 'Portal paar kar liya. Duniya mein aap ka swagat hai!'; },
+    hideEls: ['act-interact', 'act-fight', 'act-wave', 'act-dance', 'photo-btn', 'view-toggle'].map((id) => document.getElementById(id)).concat([mapCanvas]) });
+}
 raf = requestAnimationFrame(loop);
 addEventListener('pagehide', () => { cancelAnimationFrame(raf); renderer.dispose(); if (synth) synth.cancel(); });

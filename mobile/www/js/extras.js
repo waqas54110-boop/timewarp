@@ -1,5 +1,6 @@
 // Live World extras: stop & drive cars, bike, helicopter, airplane, mosque with prayer, airfield, bigger land, sky, 1000 missions.
 import * as THREE from '/vendor/three/three.module.js';
+import { create as createRescue } from '/js/rescue.js?v=1';
 
 export function create(c) {
   const { scene, camera, renderer, mode, EX, LIM, player, makePerson, lam, basic, boxGeo, vehicles, solids, collides, tickerEl, bag, shopSpots, addMoney, setCam, getYaw, root, Missions } = c;
@@ -373,7 +374,7 @@ export function create(c) {
       if (q.t > 6) { scene.remove(g); drivers.splice(i, 1); }
     }
     rides.forEach((r) => { const u = r.obj.userData, on = drv && drv.obj === r.obj; if (u.rotor) u.rotor.rotation.y += dt * (on ? 30 : 0); if (u.tail) u.tail.rotation.z += dt * (on ? 40 : 0); if (u.prop) u.prop.rotation.x += dt * (on ? 40 : 0); });
-    missionTick(dt); hazardTick(dt);
+    missionTick(dt); hazardTick(dt); rescue.update(dt);
     rides.forEach((r) => { if (r.wrecked && tt > r.respawn && Math.hypot(r.x - pos().x, r.z - pos().z) > 25) restore(r); });
     if (drv) { drive(dt, dirs); showHp(); return true; }
     return !!praying;
@@ -390,6 +391,7 @@ export function create(c) {
     rides.forEach((r) => { if (r.wrecked) return; const d = Math.hypot(r.obj.position.x - p.x, r.obj.position.z - p.z); if (d < Math.min(bd, 4) && Math.abs(r.obj.position.y - p.y) < 3) { bd = d; best = { type: 'x-ride', r, text: `Press E to get on the ${r.label}` }; } });
     if (!standingOn) vehicles.forEach((v) => { if (v.wrecked) return; const d = Math.hypot(v.obj.position.x - p.x, v.obj.position.z - p.z); if (d < bd) { bd = d; best = v.held ? { type: 'x-take', v, text: `Press E to sit in the ${CARNAME}` } : { type: 'x-stop', v, text: `Press E to stop the ${CARNAME} and pull the driver out` }; } });
     if (!best && Math.hypot(slotX - p.x, slotZ - p.z) < 3.2) best = { type: 'x-pray', text: 'Press E to join the prayer' };
+    if (!best) best = rescue.target(p);
     return best;
   }
   function act(tg) {
@@ -398,6 +400,7 @@ export function create(c) {
     else if (tg.type === 'x-ride') startDrive(tg.r.kind, tg.r.obj, tg.r, tg.r.label);
     else if (tg.type === 'x-down') climbDown();
     else if (tg.type === 'x-exit') stopDrive();
+    else if (tg.type === 'x-rescue') rescue.act(tg);
     else if (tg.type === 'x-pray') startPray();
     else if (tg.type === 'x-unpray') stopPray();
   }
@@ -405,9 +408,11 @@ export function create(c) {
     const px = (v) => clamp(mx(v), 7, w - 7), mark = (x, z, col, r) => { mm.fillStyle = col; mm.beginPath(); mm.arc(px(x), px(z), r, 0, 6.29); mm.fill(); };
     mark(MX, MZ, '#22c55e', 4); mark(AX, 0, '#94a3b8', 4); mark(PADX, PADZ, '#e2e8f0', 3);
     rides.forEach((r) => mark(r.obj.position.x, r.obj.position.z, '#f97316', 2));
+    rescue.drawMap(mm, mx, w);
     const tg = cur && (cur.target || (cur.type === 'pray' ? { x: slotX, z: slotZ } : null)); if (tg) { mm.strokeStyle = '#facc15'; mm.lineWidth = 2; mm.beginPath(); mm.arc(px(tg.x), px(tg.z), 6, 0, 6.29); mm.stroke(); const me = pos(); mm.setLineDash([4, 4]); mm.beginPath(); mm.moveTo(px(me.x), px(me.z)); mm.lineTo(px(tg.x), px(tg.z)); mm.stroke(); mm.setLineDash([]); }
   }
   const EVENTS = ['talk', 'shop', 'buy', 'wave', 'dance', 'photo'];
+  const rescue = createRescue({ scene, say, puff, pos, addMoney, rnd, collides, solid, root, sites: lms, hospital: { x: PADX + 16, z: PADZ }, isBusy: () => !!praying || !!story });   // Rescue 1122 (rescue.js)
   startMission();
   // Save System: the world page reads the mission number and restores it from a save
   const mission = () => idx;
