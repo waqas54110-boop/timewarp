@@ -2,7 +2,7 @@ import * as THREE from '/vendor/three/three.module.js';
 import { create as createExtras } from '/js/extras.js?v=15';
 import { createWorldVideo } from '/js/world-video.js';
 import { createSky } from '/js/world-sky.js';
-import { createPortalIntro } from '/js/portal-intro.js?v=1';
+import { createPortalIntro } from '/js/portal-intro.js?v=2';
 import { createEarth } from '/js/world-earth.js?v=12b';
 import * as Sprites from '/js/sprites.js?v=16';
 import { mergeGeometries } from '/vendor/three-addons/utils/BufferGeometryUtils.js';
