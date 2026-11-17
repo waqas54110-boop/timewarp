@@ -4,7 +4,7 @@ import { createWorldVideo } from '/js/world-video.js';
 import { createSky } from '/js/world-sky.js';
 import { createPortalIntro } from '/js/portal-intro.js?v=2';
 import { createEarth } from '/js/world-earth.js?v=12b';
-import * as Sprites from '/js/sprites.js?v=16';
+import * as Sprites from '/js/sprites.js?v=21';
 import { mergeGeometries } from '/vendor/three-addons/utils/BufferGeometryUtils.js';
 
 const root = document.getElementById('world');
@@ -321,15 +321,15 @@ const hero = { kind: 'original', actor: null, shown: false };
 let heroKick = false;
 const heroSel = document.getElementById('hero-look');
 function setHero(kind) {
-  if (!SPR || !['male', 'female', 'police'].includes(kind)) kind = 'original';
+  if (!SPR || !['hero', 'male', 'female', 'police'].includes(kind)) kind = 'original';
   if (hero.actor) { hero.actor.dispose(); hero.actor = null; }
   hero.kind = kind; hero.shown = false;
   if (kind !== 'original') hero.actor = Sprites.createPerson(kind, player.group);
   if (heroSel) heroSel.value = kind;
-  try { localStorage.setItem('timewarp-hero', kind); } catch (e) { /* ignore */ }
+  try { localStorage.setItem('timewarp-hero-v21', kind); } catch (e) { /* ignore */ }
 }
 {
-  let v = SPR ? 'male' : 'original'; try { v = localStorage.getItem('timewarp-hero') || v; } catch (e) { /* ignore */ }
+  let v = SPR ? 'hero' : 'original'; try { v = localStorage.getItem('timewarp-hero-v21') || v; } catch (e) { /* ignore */ }
   setHero(v);
   if (heroSel) { if (!SPR) heroSel.disabled = true; heroSel.addEventListener('change', () => setHero(heroSel.value)); }
 }

@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+<section class="adv adv-farm" id="farm" data-era="present">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures">&larr; Adventures</a> <a class="btn ghost small" href="/dino">🦖 Dino Era</a></p>
+  <h1>🌾 Time Farm</h1>
+  <p class="lead">Ek khet, teen zamane. Beej us zamane mein milte hain jis mein aap hain. Doosre zamane mein safar karein to fasal pak jaati hai, magar har fasal kuch hi safar sah sakti hai.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <div class="adv-card"><h3>⏳ Waqt ka safar</h3><div id="farm-eras" class="adv-row"></div><p id="farm-info" class="small muted"></p></div>
+  <div class="adv-two">
+    <div class="adv-card"><h3>🟫 Khet</h3><div id="farm-grid" class="farm-grid"></div>
+      <p><button id="farm-day" class="btn small" type="button">☀️ Din guzaro</button> <button id="farm-buy" class="btn small" type="button">🟫 Naya plot (Rs 120)</button></p></div>
+    <div><div id="farm-panel" class="adv-card" aria-live="polite"></div><div id="farm-market" class="adv-card"></div></div>
+  </div>
+  <p class="small muted">Tip: past mein gandum boyen, 2 qadam future tak le jayein aur wahan becho (1.5 guna bhaav + nayab bonus). Fasal ko har zamane mein paani dein: har alag zamane ka paani ek phal zyada deta hai. Tokri ki fasal Dino Era mein apne pet ko khila sakte hain.</p>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/farm-ui.js"></script>
+<%- include('../partials/footer') %>

@@ -13,7 +13,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="TimeWarp">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="stylesheet" href="/css/style.css?v=18">
+  <link rel="stylesheet" href="/css/style.css?v=21">
 </head>
 <body data-csrf="<%= csrfToken %>" data-auth="<%= user ? 1 : 0 %>">
 <a class="skip" href="#main">Skip to content</a>
@@ -21,7 +21,7 @@
   <a class="brand" href="/" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
   <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
   <nav id="nav" aria-label="Main">
-    <% const links = [['/', 'Home'], ['/past', 'Past'], ['/present', 'Present'], ['/future', 'Future'], ['/timeline', 'Timeline'], ['/globe', 'Globe'], ['/life', 'Life'], ['/me', 'Meri Duniya'], ['/compare', 'Compare'], ['/quiz', 'Quiz'], ['/leaderboard', 'Leaderboard']]; %>
+    <% const links = [['/', 'Home'], ['/past', 'Past'], ['/present', 'Present'], ['/future', 'Future'], ['/timeline', 'Timeline'], ['/globe', 'Globe'], ['/life', 'Life'], ['/adventures', 'Adventures'], ['/me', 'Meri Duniya'], ['/compare', 'Compare'], ['/quiz', 'Quiz'], ['/leaderboard', 'Leaderboard']]; %>
     <% links.forEach(([href, label]) => { %>
       <a href="<%= href %>" <%- currentPath === href ? 'aria-current="page"' : '' %>><%= label %></a>
     <% }) %>

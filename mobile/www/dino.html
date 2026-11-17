@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dinosaur Era · TimeWarp</title>
+  <meta name="description" content="TimeWarp – explore the past, present and future in an interactive 3D time portal.">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TimeWarp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/css/style.css?v=21">
+</head>
+<body data-csrf="" data-auth="0">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="/index.html" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/adventures.html">Adventures</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>
+</header>
+<main id="main">
+
+<section class="adv adv-dino" id="dino">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures.html">&larr; Adventures</a> <a class="btn ghost small" href="/farm.html">🌾 Time Farm</a></p>
+  <h1>🦖 Dinosaur Era</h1>
+  <p class="lead">Fossils khodein (💨 ke neeche daba hua hai), bade Rex 🦖 se jhaadiyon 🌿 mein chhupein, nest se anda 🥚 utha kar camp ⛺ laayen. Koi nuksan nahi hota: Rex bas daraa kar camp bhej deta hai.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <div class="adv-two">
+    <div>
+      <canvas id="dino-canvas" class="dino-canvas" role="img" aria-label="Prehistoric nakshe: fossils, jhaadiyan, dinosaur aur camp"></canvas>
+      <p id="dino-stat" class="small muted"></p>
+      <div class="dino-pad" aria-label="Chalne ke buttons">
+        <button type="button" class="btn" data-dir="0,-1" aria-label="Upar">▲</button>
+        <button type="button" class="btn" data-dir="-1,0" aria-label="Baayen">◀</button>
+        <button type="button" class="btn primary" id="dino-dig">⛏️ E / Khodo</button>
+        <button type="button" class="btn" data-dir="1,0" aria-label="Daayen">▶</button>
+        <button type="button" class="btn" data-dir="0,1" aria-label="Neeche">▼</button>
+      </div>
+      <p class="small muted">Keyboard: arrows ya WASD se chalein, E ya Space se khodein / anda uthayein.</p>
+    </div>
+    <div id="dino-camp" class="adv-card" aria-live="polite"></div>
+  </div>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/dino-ui.js"></script>
+</main>
+<footer class="site-footer">
+  <p><strong>TimeWarp</strong> is an educational and entertainment experience. History is presented from cited sources; future pages are <em>speculative scenarios</em>, not facts.</p>
+  
+  
+</footer>
+<script src="/js/main.js" defer></script>
+</body>
+</html>
+

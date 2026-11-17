@@ -8,7 +8,7 @@ const media = path.join(__dirname, '..', 'public', 'media', 'sprites');
 const png = (f) => { const b = fs.readFileSync(path.join(media, f)); assert.strictEqual(b.toString('latin1', 1, 4), 'PNG', f); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
 
 test('every person has the poses that their animation cycles use', () => {
-  for (const kind of ['male', 'female', 'police']) {
+  for (const kind of ['hero', 'male', 'female', 'police']) {
     const names = D.FRAMES[kind]; assert.strictEqual(new Set(names).size, names.length, `${kind}: duplicate pose names`);
     for (const [move, list] of Object.entries(D.CYCLES[kind])) list.forEach((f) => assert.ok(names.includes(f), `${kind}.${move} uses missing pose ${f}`));
     ['walk', 'run', 'backwalk', 'punch', 'kick', 'handsup', 'talk', 'wave', 'dance', 'pray', 'hurt'].forEach((m) => assert.ok(D.CYCLES[kind][m], `${kind} has no ${m}`));
@@ -17,7 +17,7 @@ test('every person has the poses that their animation cycles use', () => {
 });
 
 test('atlas pictures match the table: cell size, rows and pose count', () => {
-  for (const kind of ['male', 'female', 'police']) {
+  for (const kind of ['hero', 'male', 'female', 'police']) {
     const { w, h } = png(`${kind}.png`), rows = Math.ceil(D.FRAMES[kind].length / D.COLS);
     assert.strictEqual(w, D.COLS * D.CELL); assert.strictEqual(h, rows * D.CELL);
   }

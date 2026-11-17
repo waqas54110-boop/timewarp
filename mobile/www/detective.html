@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Time Detective · TimeWarp</title>
+  <meta name="description" content="TimeWarp – explore the past, present and future in an interactive 3D time portal.">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TimeWarp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/css/style.css?v=21">
+</head>
+<body data-csrf="" data-auth="0">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="/index.html" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/adventures.html">Adventures</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>
+</header>
+<main id="main">
+
+<section class="adv adv-det" id="detective">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures.html">&larr; Adventures</a></p>
+  <h1>🕵️ Time Detective</h1>
+  <p class="lead">Kisi zamane ke scene mein ek cheez waqt se bahar hai: ek "time glitch". Gawahon se poochein, clues jama karein aur use pakdein.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <p id="det-rank" class="small muted"></p>
+  <div id="det-list" class="det-list"></div>
+  <div id="det-play" hidden>
+    <div id="det-head"></div>
+    <div id="det-scene" class="det-scene"></div>
+    <div id="det-asks" class="adv-row"></div>
+    <ul id="det-log" class="det-log" aria-live="polite"></ul>
+    <div id="det-result" class="adv-card" hidden></div>
+  </div>
+  <noscript><p class="error">Is khel ke liye JavaScript chahiye.</p></noscript>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/detective-ui.js"></script>
+</main>
+<footer class="site-footer">
+  <p><strong>TimeWarp</strong> is an educational and entertainment experience. History is presented from cited sources; future pages are <em>speculative scenarios</em>, not facts.</p>
+  
+  
+</footer>
+<script src="/js/main.js" defer></script>
+</body>
+</html>
+

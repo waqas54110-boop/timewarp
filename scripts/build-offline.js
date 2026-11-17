@@ -10,7 +10,7 @@ const root = path.join(__dirname, '..');
 const out = path.join(root, 'mobile', 'www');
 const YEAR = new Date().getFullYear();
 
-const NAV = '<nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>';
+const NAV = '<nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/adventures.html">Adventures</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>';
 
 // server links -> the static files of the app; pages that need the server (login, quiz...) are removed
 function transform(html) {
@@ -21,6 +21,7 @@ function transform(html) {
     .replace(/href="\/world\?mode=future&(?:amp;)?year=\d+"/g, 'href="/world-2050.html"')
     .replace(/href="\/world\?mode=present&(?:amp;)?year=\d+"/g, 'href="/world-present.html"')
     .replace(/href="\/me"/g, 'href="/me.html"')
+    .replace(/href="\/(adventures|farm|detective|dino)"/g, 'href="/$1.html"')
     .replace(/href="\/life"/g, 'href="/life.html"')
     .replace(/href="\/"/g, 'href="/index.html"')
     .replace('&larr; Back to scene', '&larr; Home');
@@ -32,6 +33,10 @@ const BASE = { title: '', csrfToken: '', user: null, currentPath: '/', fy: forma
 const PAGES = [
   ['life.ejs', 'life.html', { title: 'Life Mode', currentPath: '/life' }],
   ['me.ejs', 'me.html', { title: 'Meri Duniya', currentPath: '/me' }],
+  ['adventures.ejs', 'adventures.html', { title: 'Adventures', currentPath: '/adventures' }],
+  ['farm.ejs', 'farm.html', { title: 'Time Farm', currentPath: '/farm' }],
+  ['detective.ejs', 'detective.html', { title: 'Time Detective', currentPath: '/detective' }],
+  ['dino.ejs', 'dino.html', { title: 'Dinosaur Era', currentPath: '/dino' }],
   ['world.ejs', 'world-present.html', { title: 'Live World', currentPath: '/world', mode: 'present', year: YEAR }],
   ['world.ejs', 'world-2050.html', { title: 'Live World 2050', currentPath: '/world', mode: 'future', year: 2050 }],
 ];
@@ -44,6 +49,7 @@ const INDEX = `<!DOCTYPE html>
 <p><a class="btn primary" href="/life.html">Life Mode</a></p>
 <p><a class="btn primary" href="/world-present.html">Live World</a></p>
 <p><a class="btn ghost" href="/world-2050.html">Live World 2050</a></p>
+<p><a class="btn primary" href="/adventures.html">Adventures (Farm, Detective, Dino)</a></p>
 <p><a class="btn ghost" href="/me.html">Meri Duniya</a></p>
 </main></body></html>
 `;
@@ -102,8 +108,8 @@ async function main() {
   }
   fs.writeFileSync(path.join(out, 'index.html'), INDEX);
 
-  const must = ['index.html', 'life.html', 'me.html', 'world-present.html', 'world-2050.html', 'css/style.css', 'js/world.js', 'js/life.js',
-    'js/sprites.js', 'js/sprite-data.js', 'js/models.js', 'media/sprites/male.png', 'media/sprites/female.png', 'media/sprites/police.png', 'media/sprites/v-taxi.png',
+  const must = ['index.html', 'life.html', 'me.html', 'adventures.html', 'farm.html', 'detective.html', 'dino.html', 'js/adv.js', 'js/farm.js', 'js/detective.js', 'js/dino.js', 'js/adv-ui.js', 'js/farm-ui.js', 'js/detective-ui.js', 'js/dino-ui.js', 'world-present.html', 'world-2050.html', 'css/style.css', 'js/world.js', 'js/life.js',
+    'js/sprites.js', 'js/sprite-data.js', 'js/models.js', 'js/hero-boy.js', 'media/sprites/hero.png', 'media/sprites/male.png', 'media/sprites/female.png', 'media/sprites/police.png', 'media/sprites/v-taxi.png',
     'vendor/three/three.module.js', 'vendor/three-addons/utils/BufferGeometryUtils.js', 'vendor/three-addons/loaders/GLTFLoader.js', 'vendor/three-addons/utils/SkeletonUtils.js', 'media/models/index.json', 'media/world-ids.png', 'media/world-sdf.png', 'data/countries.json'];
   const missing = must.filter((f) => !fs.existsSync(path.join(out, f)));
   if (missing.length) throw new Error('Offline bundle is missing: ' + missing.join(', '));

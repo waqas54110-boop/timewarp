@@ -73,7 +73,9 @@ export async function preload() {
   const load = (u) => loader.loadAsync(u).catch((e) => { console.warn('model not loaded:', u, e && e.message); return null; });
   const animCache = new Map();
   const loadAnim = (file) => { if (!animCache.has(file)) animCache.set(file, load('/media/models/anims/' + file).then((g) => g && g.animations[0] ? inPlace(stripScale(g.animations[0].clone())) : null)); return animCache.get(file); };
-  await Promise.all(list.models.map(async (file) => {
+  const jobs = list.models.map((file) => ({ file, hero: false }));
+  await Promise.all(jobs.map(async (job) => {
+    const file = job.file;
     const base = file.replace(/\.glb$/i, ''), stem = base.replace(/\d+$/, ''), kind = Object.keys(FILE).find((k) => FILE[k] === stem);   // woman2.glb = another woman
     if (!kind) return;
     const gl = await load('/media/models/' + file); if (!gl) return;

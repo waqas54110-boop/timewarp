@@ -2,7 +2,7 @@ import * as THREE from '/vendor/three/three.module.js';
 import { create as createExtras } from '/js/extras.js?v=15';
 import { createWorldVideo } from '/js/world-video.js';
 import { createSky } from '/js/world-sky.js';
-import { createPortalIntro } from '/js/portal-intro.js?v=1';
+import { createPortalIntro } from '/js/portal-intro.js?v=2';
 import { createEarth } from '/js/world-earth.js?v=12b';
 import * as Sprites from '/js/sprites.js?v=16';
 import { mergeGeometries } from '/vendor/three-addons/utils/BufferGeometryUtils.js';
@@ -857,6 +857,18 @@ function fight() {
 function doEmote(type) { if (!talk && !frozen() && !X.driving) { emote = { type, t: type === 'dance' ? 4 : 2.2 }; X.event(type); } }
 $('photo-btn').addEventListener('click', () => { photoNext = true; X.event('photo'); });
 $('act-interact').addEventListener('click', interact); $('act-fight').addEventListener('click', fight);
+// ---------- phone: big round E / F buttons by the thumb; the E button shows what it will do (car, door, talk...) and glows when something is in reach ----------
+const COARSE = matchMedia('(pointer:coarse)').matches || innerWidth <= 900;
+const actE = $('act-interact'), actF = $('act-fight');
+const E_ICON = { 'x-stop': '🚗', 'x-take': '🚗', 'x-ride': '🚗', 'x-exit': '⬇', 'x-down': '⬇', enter: '🚪', exit: '🚪', 'tower-enter': '🚪', 'tower-exit': '🚪', 'tower-lift': '🛗', talk: '💬', keeper: '💬', 'x-pray': '🕌', 'x-unpray': '🕌', 'x-rescue': '🚑' };
+let eIcon = null;
+function setEBtn(tg) {
+  if (!COARSE) return;
+  const k = tg ? (E_ICON[tg.type] || '✋') : '';
+  if (k === eIcon) return; eIcon = k;
+  actE.innerHTML = `<span class="act-ico">${k || 'E'}</span>${k ? '<small>E</small>' : ''}`; actE.classList.toggle('hot', !!k);
+}
+if (COARSE) { actF.innerHTML = '<span class="act-ico">👊</span><small>F</small>'; setEBtn(null); promptEl.addEventListener('click', interact); }   // tap the yellow hint ("Press E to ...") to do it too
 $('act-wave').addEventListener('click', () => doEmote('wave')); $('act-dance').addEventListener('click', () => doEmote('dance'));
 
 // ---------- keyboard / mouse / touch ----------
@@ -1030,6 +1042,7 @@ function loop(now) {
   const msg = isFrozen ? 'Police are warning you…' : tg ? tg.text : '';
   if (msg !== promptEl.textContent) promptEl.textContent = msg;
   promptEl.hidden = !msg;
+  setEBtn(tg);
   mapCanvas.hidden = !!shop || !!tower || (E !== null && (Math.abs(pos.x) > TOWN_R || Math.abs(pos.z) > TOWN_R));
   if (!shop && (mapT -= dt) <= 0) { mapT = 0.2; drawMap(); }
 
@@ -1083,7 +1096,8 @@ window.__tw = { get tower() { return tower; }, enterTower, doors, interactTarget
 // ---------- Portal intro: the game starts in the time-lab, the hero walks to the portal and jumps into the chosen era ----------
 let PI = null;
 if (new URLSearchParams(location.search).get('continue') !== '1' && !/[?&]nointro=1/.test(location.search)) {
-  PI = createPortalIntro({ THREE, renderer, camera, player, mode, year: YEAR, onDone: () => { PI = null; yaw = 0; pitch = 0.35; if (tickerEl) tickerEl.textContent = 'Portal paar kar liya. Duniya mein aap ka swagat hai!'; },
+  root.classList.add('portal-intro');
+  PI = createPortalIntro({ THREE, renderer, camera, player, mode, year: YEAR, onDone: () => { PI = null; root.classList.remove('portal-intro'); yaw = 0; pitch = 0.35; if (tickerEl) tickerEl.textContent = 'Portal paar kar liya. Duniya mein aap ka swagat hai!'; },
     hideEls: ['act-interact', 'act-fight', 'act-wave', 'act-dance', 'photo-btn', 'view-toggle'].map((id) => document.getElementById(id)).concat([mapCanvas]) });
 }
 raf = requestAnimationFrame(loop);

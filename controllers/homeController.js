@@ -36,3 +36,7 @@ exports.privacy = (req, res) => res.render('pages/privacy', { title: 'Privacy' }
 exports.about = (req, res) => res.render('pages/about', { title: 'About & Sources' });
 exports.life = (req, res) => res.render('pages/life', { title: 'Life Mode' });
 exports.me = (req, res) => res.render('pages/me', { title: 'Meri Duniya' });
+exports.adventures = (req, res) => res.render('pages/adventures', { title: 'Adventures' });
+exports.farm = (req, res) => res.render('pages/farm', { title: 'Time Farm' });
+exports.detective = (req, res) => res.render('pages/detective', { title: 'Time Detective' });
+exports.dino = (req, res) => res.render('pages/dino', { title: 'Dinosaur Era' });

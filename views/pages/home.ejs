@@ -29,6 +29,7 @@
     <div class="save-bar" id="save-bar">
       <a id="continue-btn" class="btn primary" href="<%= savedGame ? savedGame.url : '#' %>" <%- savedGame ? '' : 'hidden' %>>Continue<%= savedGame ? (savedGame.mode === 'world' ? ' (Live World)' : ' (Life Mode)') : '' %></a>
       <a id="newlife-btn" class="btn ghost" href="/life?new=1" data-confirm-save="1">New Life</a>
+      <a class="btn ghost" href="/adventures">🧭 Adventures</a>
       <p class="small-note muted" id="save-note" <%- savedGame ? '' : 'hidden' %>><%= savedGame ? 'Aap ka progress account mein save hai.' : '' %></p>
     </div>
     <button id="portal-toggle" class="link-btn small" type="button" aria-pressed="false">Pause animation</button>

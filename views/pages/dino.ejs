@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+<section class="adv adv-dino" id="dino">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures">&larr; Adventures</a> <a class="btn ghost small" href="/farm">🌾 Time Farm</a></p>
+  <h1>🦖 Dinosaur Era</h1>
+  <p class="lead">Fossils khodein (💨 ke neeche daba hua hai), bade Rex 🦖 se jhaadiyon 🌿 mein chhupein, nest se anda 🥚 utha kar camp ⛺ laayen. Koi nuksan nahi hota: Rex bas daraa kar camp bhej deta hai.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <div class="adv-two">
+    <div>
+      <canvas id="dino-canvas" class="dino-canvas" role="img" aria-label="Prehistoric nakshe: fossils, jhaadiyan, dinosaur aur camp"></canvas>
+      <p id="dino-stat" class="small muted"></p>
+      <div class="dino-pad" aria-label="Chalne ke buttons">
+        <button type="button" class="btn" data-dir="0,-1" aria-label="Upar">▲</button>
+        <button type="button" class="btn" data-dir="-1,0" aria-label="Baayen">◀</button>
+        <button type="button" class="btn primary" id="dino-dig">⛏️ E / Khodo</button>
+        <button type="button" class="btn" data-dir="1,0" aria-label="Daayen">▶</button>
+        <button type="button" class="btn" data-dir="0,1" aria-label="Neeche">▼</button>
+      </div>
+      <p class="small muted">Keyboard: arrows ya WASD se chalein, E ya Space se khodein / anda uthayein.</p>
+    </div>
+    <div id="dino-camp" class="adv-card" aria-live="polite"></div>
+  </div>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/dino-ui.js"></script>
+<%- include('../partials/footer') %>

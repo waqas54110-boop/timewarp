@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Time Farm · TimeWarp</title>
+  <meta name="description" content="TimeWarp – explore the past, present and future in an interactive 3D time portal.">
+  <meta name="theme-color" content="#070b1a">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="64x64" href="/icons/favicon-64.png">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="TimeWarp">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/css/style.css?v=21">
+</head>
+<body data-csrf="" data-auth="0">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="/index.html" aria-label="TimeWarp home"><span class="brand-mark" aria-hidden="true"></span>TimeWarp</a>
+  <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button>
+  <nav id="nav" aria-label="Main"><a href="/index.html">Home</a><a href="/life.html">Life</a><a href="/adventures.html">Adventures</a><a href="/me.html">Meri Duniya</a><a href="/world-present.html">Live World</a><a href="/world-2050.html">World 2050</a></nav>
+</header>
+<main id="main">
+
+<section class="adv adv-farm" id="farm" data-era="present">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures.html">&larr; Adventures</a> <a class="btn ghost small" href="/dino.html">🦖 Dino Era</a></p>
+  <h1>🌾 Time Farm</h1>
+  <p class="lead">Ek khet, teen zamane. Beej us zamane mein milte hain jis mein aap hain. Doosre zamane mein safar karein to fasal pak jaati hai, magar har fasal kuch hi safar sah sakti hai.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <div class="adv-card"><h3>⏳ Waqt ka safar</h3><div id="farm-eras" class="adv-row"></div><p id="farm-info" class="small muted"></p></div>
+  <div class="adv-two">
+    <div class="adv-card"><h3>🟫 Khet</h3><div id="farm-grid" class="farm-grid"></div>
+      <p><button id="farm-day" class="btn small" type="button">☀️ Din guzaro</button> <button id="farm-buy" class="btn small" type="button">🟫 Naya plot (Rs 120)</button></p></div>
+    <div><div id="farm-panel" class="adv-card" aria-live="polite"></div><div id="farm-market" class="adv-card"></div></div>
+  </div>
+  <p class="small muted">Tip: past mein gandum boyen, 2 qadam future tak le jayein aur wahan becho (1.5 guna bhaav + nayab bonus). Fasal ko har zamane mein paani dein: har alag zamane ka paani ek phal zyada deta hai. Tokri ki fasal Dino Era mein apne pet ko khila sakte hain.</p>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/farm-ui.js"></script>
+</main>
+<footer class="site-footer">
+  <p><strong>TimeWarp</strong> is an educational and entertainment experience. History is presented from cited sources; future pages are <em>speculative scenarios</em>, not facts.</p>
+  
+  
+</footer>
+<script src="/js/main.js" defer></script>
+</body>
+</html>
+

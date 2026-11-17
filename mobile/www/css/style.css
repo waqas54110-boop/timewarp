@@ -402,3 +402,65 @@ tr.me td{background:#17306a55;font-weight:600}
 @keyframes sc-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sc-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @media (prefers-reduced-motion: reduce) { .story-cine, .sc-icon { animation: none; } }
+
+/* ---------- phone: big round E / F buttons in the thumb zone (above the walk pad); the "Press E to..." hint is tappable ---------- */
+@media (pointer:coarse), (max-width:900px) {
+  .world-actions { display: contents; }
+  #act-interact, #act-fight { position: absolute; z-index: 5; width: 4.6rem; height: 4.6rem; min-width: 0; min-height: 0; padding: 0; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; background: #0a1030cc; border: 2px solid #ffffff55; color: #fff; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; }
+  #act-interact { right: .7rem; bottom: 10.2rem; }
+  #act-fight { right: 5.7rem; bottom: 10.2rem; }
+  #act-interact .act-ico, #act-fight .act-ico { font-size: 1.7rem; }
+  #act-interact small, #act-fight small { font-size: .7rem; opacity: .85; margin-top: 2px; font-weight: 700; }
+  #act-interact.hot { background: #facc15; color: #111; border-color: #fff; box-shadow: 0 0 0 4px #facc1566, 0 0 22px #facc15; animation: act-pulse 1s ease-in-out infinite; }
+  #act-interact:active, #act-fight:active { transform: scale(.92); }
+  #act-wave, #act-dance { position: absolute; left: .6rem; z-index: 3; min-width: 48px; min-height: 48px; }
+  #act-wave { bottom: 1rem; } #act-dance { bottom: 4.6rem; }
+  .world-prompt { pointer-events: auto; cursor: pointer; background: #facc15; color: #111; border-color: #fff; padding: .55rem 1rem; min-height: 48px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 18px #facc1599; left: .6rem; right: 10.9rem; bottom: 10.4rem; transform: none; max-width: none; font-size: .88rem; border-radius: 18px; }
+  .world-ticker { bottom: 15.6rem; }
+}
+@keyframes act-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+/* portal intro: only the walk pad stays on top of the lab picture */
+.world.portal-intro > *:not(#world-canvas):not(.explore-pad) { visibility: hidden !important; }
+
+/* ---------- Adventures: Time Farm, Time Detective, Dinosaur Era (v21) ---------- */
+.adv{max-width:1000px;margin:0 auto;padding:1.5rem 1.2rem 3rem}
+.adv-top{display:flex;gap:.5rem;flex-wrap:wrap}
+.adv-wallet{display:flex;gap:.6rem 1.2rem;flex-wrap:wrap;margin:.6rem 0;padding:.6rem .9rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);font-weight:600}
+.adv-msg{min-height:1.6em;margin:.2rem 0 .8rem;color:var(--cyan)} .adv-msg.bad{color:var(--danger)}
+.adv-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;margin-bottom:1rem}
+.adv-card h3{margin-top:0}
+.adv-two{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1rem;align-items:start}
+@media (max-width:760px){.adv-two{grid-template-columns:1fr}}
+.adv-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+.adv-row input{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:.4rem .6rem;font:inherit;max-width:12rem}
+.adv-hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1.2rem 0}
+.adv-tile{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem;color:var(--text);text-decoration:none;transition:transform .15s,border-color .15s}
+.adv-tile:hover{transform:translateY(-3px);border-color:var(--accent);color:var(--text)}
+.adv-tile h2{margin:.3rem 0} .adv-tile p{color:var(--muted);margin:0}
+.adv-big{font-size:2.6rem}
+/* farm */
+.adv-farm[data-era="past"]{--accent:var(--amber)} .adv-farm[data-era="future"]{--accent:var(--purple)}
+.farm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:.8rem}
+.plot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;min-height:92px;border-radius:12px;border:2px solid #5b3d1f;background:#6b4a2a;color:#fff;cursor:pointer;font:inherit;padding:.4rem}
+.adv-farm[data-era="past"] .plot{background:#7a5a33} .adv-farm[data-era="future"] .plot{background:#2c3a63;border-color:#4c5ea3}
+.plot.sel{outline:3px solid var(--accent);outline-offset:2px}
+.plot.ripe{box-shadow:0 0 14px 2px #facc15aa} .plot.rotten{opacity:.65}
+.plot-icon{font-size:2rem;line-height:1} .plot-icon.grow{animation:plotgrow 2.4s ease-in-out infinite}
+@keyframes plotgrow{0%,100%{transform:scale(.9)}50%{transform:scale(1.08)}}
+.plot-tag{font-size:.75rem;opacity:.9} .plot-wet{font-size:.7rem}
+/* detective */
+.det-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin:1rem 0}
+.det-case{display:grid;gap:.2rem;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.8rem;color:var(--text);cursor:pointer;font:inherit}
+.det-case:hover{border-color:var(--accent)} .det-stars{color:#facc15;letter-spacing:.1em}
+.det-scene{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin:1rem 0}
+@media (max-width:620px){.det-scene{grid-template-columns:repeat(2,1fr)}}
+.det-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:.7rem .4rem;color:var(--text);cursor:pointer;font:inherit;min-height:104px;transition:opacity .2s}
+.det-item.out{opacity:.3} .det-item.sel{border-color:var(--cyan);box-shadow:0 0 14px #22d3ee66} .det-item.glitch{border-color:#facc15;opacity:1;box-shadow:0 0 16px #facc1566}
+.det-item:disabled{cursor:default} .det-icon{font-size:2.2rem;line-height:1} .det-name{font-size:.9rem;text-align:center} .det-attrs{color:var(--muted);text-align:center}
+.det-log{list-style:none;padding:0;margin:.8rem 0;display:grid;gap:.4rem} .det-log li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.5rem .8rem} .det-log li.rumour{border-style:dashed;color:var(--muted)}
+/* dinosaur era */
+.dino-canvas{display:block;width:100%;height:auto;border:3px solid #1c1530;border-radius:14px;background:#2f6b3a;image-rendering:auto;touch-action:none}
+.dino-pad{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;margin:.6rem 0;touch-action:none;user-select:none;-webkit-user-select:none}
+.dino-pad .btn{min-width:3.2rem;min-height:3rem;font-size:1.1rem}
+.dino-pet{font-size:1.2rem;font-weight:700}

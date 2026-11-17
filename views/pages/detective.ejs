@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+<section class="adv adv-det" id="detective">
+  <p class="adv-top"><a class="btn ghost small" href="/adventures">&larr; Adventures</a></p>
+  <h1>🕵️ Time Detective</h1>
+  <p class="lead">Kisi zamane ke scene mein ek cheez waqt se bahar hai: ek "time glitch". Gawahon se poochein, clues jama karein aur use pakdein.</p>
+  <div id="adv-wallet" class="adv-wallet" aria-label="Aap ka wallet"></div>
+  <p id="adv-msg" class="adv-msg" role="status" aria-live="polite"></p>
+  <p id="det-rank" class="small muted"></p>
+  <div id="det-list" class="det-list"></div>
+  <div id="det-play" hidden>
+    <div id="det-head"></div>
+    <div id="det-scene" class="det-scene"></div>
+    <div id="det-asks" class="adv-row"></div>
+    <ul id="det-log" class="det-log" aria-live="polite"></ul>
+    <div id="det-result" class="adv-card" hidden></div>
+  </div>
+  <noscript><p class="error">Is khel ke liye JavaScript chahiye.</p></noscript>
+</section>
+<script src="/js/adv.js"></script>
+<script src="/js/farm.js"></script>
+<script src="/js/detective.js"></script>
+<script src="/js/dino.js"></script>
+<script src="/js/adv-ui.js"></script>
+<script src="/js/detective-ui.js"></script>
+<%- include('../partials/footer') %>

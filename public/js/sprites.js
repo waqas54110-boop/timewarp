@@ -4,7 +4,8 @@
 // right pose is picked every frame from what the person is doing and from where the camera is.
 // Honest limit: this is "2.5D" (a standing cut-out that turns to face the camera), not a rigged 3D model.
 import * as THREE from '/vendor/three/three.module.js';
-import * as Models from '/js/models.js?v=15';
+import * as Models from '/js/models.js?v=18';
+import { createHeroBoy } from '/js/hero-boy.js?v=2';
 
 const BASE = '/media/sprites/';
 const D = window.TimeWarpSprites;
@@ -50,6 +51,7 @@ const shadowGeo = new THREE.CircleGeometry(0.55, 16), shadowMat = new THREE.Mesh
 
 export const modelsReady = Models.preload().catch((e) => { console.warn('3D people unavailable:', e && e.message); return false; });   // real 3D people (models.js), used instead of the pictures when a .glb exists
 export function createPerson(kind, group) {
+  if (kind === 'hero') return createHeroBoy(group);                                           // the hero is a real 3D boy built in code (hero-boy.js)
   if (Models.has(kind)) return Models.createModelPerson(kind, group);                       // group = the THREE.Group of the person (moves and turns like before)
   const names = FRAMES[kind], rows = Math.ceil(names.length / COLS), cyc = CYCLES[kind];
   const geo = new THREE.PlaneGeometry(1, 1); geo.translate(0, 0.5, 0);
@@ -76,11 +78,12 @@ export function createPerson(kind, group) {
       const ry = group.rotation.y, hx = Math.sin(ry), hz = Math.cos(ry);          // the way the person faces (world)
       const dotF = hx * camFwd.x + hz * camFwd.z, dotR = hx * camRight.x + hz * camRight.z;   // dotF > 0: walking away from the camera
       if (Math.abs(dotR) > 0.2) flip = dotR < 0;                                  // the pictures face right; mirror them for left (hysteresis stops flicker)
-      let away = dotF > 0.55 && !opts.side;
+      const isHero = kind === 'hero';                                             // the hero only has a side view: never switch to a back view, narrow a little when seen from front/behind
+      let away = dotF > 0.55 && !opts.side && !isHero;
       let list = null, fps = 6, bob = 0, sway = 0;
       switch (pose) {
-        case 'walk': list = away ? cyc.backwalk : cyc.walk; fps = 3 + speed * 2.2; bob = 0.035; break;
-        case 'run': list = away ? [...cyc.backwalk, ...cyc.backwalk] : cyc.run; fps = 9; bob = 0.06; sway = 0.03; break;
+        case 'walk': list = away ? cyc.backwalk : cyc.walk; fps = isHero ? 7 + speed * 1.2 : 3 + speed * 2.2; bob = isHero ? 0.012 : 0.035; break;
+        case 'run': list = away ? [...cyc.backwalk, ...cyc.backwalk] : cyc.run; fps = isHero ? 12 : 9; bob = isHero ? 0.02 : 0.06; sway = isHero ? 0.02 : 0.03; break;
         case 'punch': case 'kick': case 'handsup': case 'talk': case 'wave': case 'dance': case 'pray': case 'hurt': list = cyc[pose]; fps = pose === 'dance' ? 5 : pose === 'talk' ? 2.2 : pose === 'wave' ? 3 : 7; away = false; if (pose === 'dance') { bob = 0.07; flip = Math.floor(t * 2.5) % 2 === 0; } break;
         default: list = null;
       }
@@ -92,6 +95,7 @@ export function createPerson(kind, group) {
       // the figure stays upright and always turns its face to the camera
       const px = group.position.x, pz = group.position.z;
       mesh.rotation.y = Math.atan2(_cam.x - px, _cam.z - pz) - ry;
+      if (isHero) mesh.scale.x = SIZE * (0.74 + 0.26 * Math.min(1, Math.abs(dotR)));
       const step = list && bob ? Math.abs(Math.sin((t + clock) * fps * Math.PI / (list.length > 2 ? 2 : 1))) : 0;
       mesh.position.y = -FOOT + step * bob * 2 * personH / 1.78;
       mesh.rotation.z = sway ? Math.sin((t + clock) * fps * 1.6) * sway : 0;
